@@ -1,0 +1,78 @@
+// AK_SND_ONLY_START(KC_T)
+//   R_FRST(KC_B, KC_M)
+//   -> mb
+//   R_SCND(KC_Y, KC_G)
+//   -> tg
+//   R_THRD(KC_H, KC_E)
+//   -> the
+//   R_THRD(KC_C, KC_H)
+//   -> tch
+//    R_2STR(KC_M, "hello, world!" )
+//   -> "hello, world!"
+// START(1, KC_A)
+//   REP(2, KC_E, KC_U)
+//   REP(1, KC_M, KC_L)
+//   END(1)
+// 
+// START(1, KC_G)
+//   REP(1, KC_M, KC_L)
+//    // R_2STR(KC_T, "me@treypeacock.com" )
+//   END(1)
+// 
+START(2, KC_E, KC_N)
+  REP(1, KC_M, KC_L)
+  REP(2, KC_E, KC_U)
+  STRING(KC_T, "me@treypeacock.com" )
+  ALL(KC_V, KC_B)
+  END(2)
+
+START(2, KC_W, KC_W)
+  REP(1, KC_M, KC_L)
+  ALL(KC_F, KC_D, KC_L, KC_G)
+  STRING(KC_W, "me@treypeacock.com" )
+  END(2)
+
+START(1, KC_B)
+  ADD(KC_E, KC_X, KC_M)
+  ALL(KC_F, KC_D, KC_L)
+  STRING(KC_W, "me@treypeacock.com" )
+  END(1)
+
+// START(1, KC_D)
+//   R_SCND(KC_B, KC_L)
+//   END(1)
+
+// START(1, KC_G)
+//   R_FRST(KC_M, KC_L)
+//   R_SCND(KC_P, KC_L)
+//   END(1)
+  
+// START(1, KC_M)
+//   R_SCND(KC_G, KC_L)
+//   R_SCND(KC_V, KC_B)
+//   END(1)
+
+// START(1, KC_P)
+//   R_SCND(KC_M, KC_L)
+//   R_FRST(KC_V, KC_L)
+//   END(1)
+
+// START(1, KC_A)
+// R_SCND(KC_E, KC_U)
+// ADD(KC_O, KC_G)
+// END(1)
+
+// START(1, KC_G)
+// R_FRST(KC_M, KC_L)
+// END(1)
+
+// START(2, KC_W, KC_W)
+// R_FRST(KC_M, KC_L)
+// END(2)
+
+// START(2, KC_S, KC_M)
+// R_FRST(KC_E, KC_L)
+// R_SCND(KC_T, KC_U)
+// R_THRD(KC_S, KC_X)
+// ADD(KC_O, KC_G)
+// END(2)
