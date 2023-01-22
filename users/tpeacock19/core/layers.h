@@ -8,11 +8,11 @@ enum my_layers
   L_GOLD,
   L_SYM,
   L_NUM,
-  L_MODS,
   L_NAV,
   L_WNAV,
   L_SWNAV,
   L_MEDIA,
   L_FUNC,
   L_EMACS,
+  L_MODS,
 } layers_t;

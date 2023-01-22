@@ -40,13 +40,16 @@ struct key_mods
 #if defined(TAP_DANCE_ENABLE)
 int cur_dance(qk_tap_dance_state_t *state);
 int hold_cur_dance(qk_tap_dance_state_t *state);
-bool is_key_on_tap(uint16_t keycode);
 
 typedef struct
 {
   bool is_press_action;
   int state;
 } xtap;
+#endif
+
+#ifndef NO_ACTION_TAPPING
+bool is_key_on_tap(uint16_t keycode);
 #endif
 
 // Custom Shortcuts
@@ -136,58 +139,24 @@ enum
 // Custom keycodes
 enum custom_keycodes
 {
-  CUSTOM_KEYCODE_START = SAFE_RANGE,
-  CANCEL,
-  TG_MAC,
-  TG_WIN,
-  TG_LIN,
-  SYM_RPT,
-  SYM_REV,
-  NUM_REV,
-  NUM_RPT,
-  SWAPKEY,
-  LLOCK,
-
-  // repeat
-  SWAP,
-  REPEAT,
-  REVRPT,
-  NW_TOGG,
-  GOTOBASE,
-  BASETOGG,
-  L_BASE,
-  // Begin macros that can be shifted
-  SFT_MACRO_START = SAFE_RANGE,
-  RESET,
-  TG_CASE,
-  LIN_LBRC,
-  LIN_LPRN,
-  LIN_LBRK,
-  LINBRC,
-  LINPRN,
-  LINCBR,
-  LINQ,
-
-  XCUT,
-  XCOPY,
-  XPAST,
-  XWFWD,
-  XWBAK,
-  XSRCH,
-  XWTOG,
-  XMAX,
-  XMVR,
-  XMVL,
-  XWMOV,
-  XWMOVL,
-  XLOCK,
-  XCLOSE,
-  XUNDO,
-  XREDO,
   // clang-format off
-  // Common shortcuts
-  MC_SELC, MC_SAVE, MC_UNDO, MC_CTAB,
-  MC_LOCK, MC_FULL, MC_FIND, MC_REF,
+  CUSTOM_KEYCODE_START = SAFE_RANGE,
+  TG_MAC, TG_WIN, TG_LIN,
+  SYM_RPT, SYM_REV,
+  NUM_REV, NUM_RPT,
+
+  REPEAT, SWAPKEY,
+  GOTOBASE, LLOCK,
+
+  BASETOGG, NW_TOGG,
+  /* Linger Keys */
+  LINBRC, LINPRN, LINCBR, LINQ,
+  /* Common shortcuts */
+  XCUT, XCOPY, XPAST, XUNDO, XREDO,
+  XWFWD, XWBAK, XSRCH, XWTOG,
+  XMAX, XWMOV, XWMOVL,
+  /* XMVR, XMVL,  */
+  XLOCK, XCLOSE,
 
   // IDE shortcuts
   MC_QUIK, MC_AUCO,
@@ -195,28 +164,8 @@ enum custom_keycodes
   MC_PROJ, MC_RECE, MC_COMP, MC_FIUS, MC_REFC,
   MC_JOIN, MC_COMT,
 
-  // Begin macros used to write text
-  STR_MACRO_START,
-
-  MC_BTIC, MC_DQUO, MC_SQUO,
-  MC_UNDS, MC_ENT, MC_TAB, MC_ESC,
-  MC_ESAV, MC_SENT, MC_CUR,
-  MC_DAND, MC_DPIP,
-
-  // End macros that can be shifted
-  SFT_MACRO_END,
-
-  // Accented letters
-  MC_GV_A, MC_CR_A, MC_TL_A, MC_SQ_A,
-  MC_SQ_U, MC_CR_O, MC_SQ_O, MC_SQ_I,
-  MC_CR_E, MC_TL_O, MC_SQ_C, MC_SQ_E,
-  MC_AO, MC_CAO, MC_OES, MC_COES,
-
-  // End macros used to write text
-  STR_MACRO_END,
-  // clang-format on
-
   CUSTOM_KEYCODE_END,
+  // clang-format on
 };
 
 #define XCUT S(KC_DELETE)
@@ -225,23 +174,33 @@ enum custom_keycodes
 
 // Custom Tap-Hold
 
-#define XWFWD LT(0, KC_A)
-#define XWBAK LT(0, KC_B)
+#define XWFWD LT(0, KC_WWW_FORWARD)
+#define XWBAK LT(0, KC_WWW_BACK)
 #define XSRCH LT(0, KC_C)
-#define XWTOG LT(0, KC_D)
-#define XMAX LT(0, KC_E)
+#define XWTOG LT(0, KC_Y)
+#define XMAX LT(0, KC_W)
 #define XMVR LT(0, KC_F)
 #define XMVL LT(0, KC_G)
-#define XWMOV LT(0, KC_H)
-#define XLOCK LT(0, KC_I)
+#define XWMOV LT(0, KC_V)
+#define XLOCK LT(0, KC_X)
 #define XCLOSE LT(0, KC_J)
 #define XUNDO LT(0, KC_K)
-#define XREDO LT(0, KC_UNDO)
+#define XREDO LT(0, KC_AGAIN)
+
+#define ALT_R MT(MOD_LALT, KC_R)
+#define SFT_S MT(MOD_LSFT, KC_S)
+#define CRL_T MT(MOD_LCTL, KC_T)
+#define GUI_D MT(MOD_LGUI, KC_D)
+
+#define ALT_I MT(MOD_LALT, KC_I)
+#define SFT_E MT(MOD_LSFT, KC_E)
+#define CRL_N MT(MOD_LCTL, KC_N)
+#define GUI_H MT(MOD_LGUI, KC_H)
 
 /* Tap: One-Shot Shift | Hold: Layer */
-#define NAV_SFT LT(L_NAV, TG_CASE)
-#define MED_SFT LT(L_MEDIA, TG_CASE)
-#define SYM_SFT LT(L_SYM, TG_CASE)
+#define NAV_SFT LT(L_NAV, KC_NO)
+#define MED_SFT LT(L_MEDIA, KC_NO)
+#define SYM_SFT LT(L_SYM, KC_NO)
 
 /* Tap: Repeat | Hold: Layer */
 #define SYM_RPT LT(L_SYM, REPEAT)
@@ -252,23 +211,23 @@ enum custom_keycodes
 #define MOD_SPC LT(L_MODS, KC_SPC)
 
 /* Swapper */
-#define SWAPKEY LT(0, SWAP)
+#define SWAPKEY LT(0, KC_P)
 
 #define WFWD LT(0, KC_WWW_FORWARD)
 #define WBAK LT(0, KC_WWW_BACK)
 
 /* Linger Keys  */
-#define BASETOGG LT(0, L_BASE)
+#define BASETOGG LT(0, KC_F1)
 #define COMPAR LT(0, KC_COMM)
 #define DOTMIN LT(0, KC_DOT)
 #define SLSEXC LT(0, KC_SLASH)
 #define LINBRC LT(0, KC_LBRC)
 #define LINPRN LT(0, KC_LPRN)
-#define LINCBR LT(0, LIN_LBRC)
 #define LINQ LT(0, KC_Q)
+#define LINCBR LT(0, KC_Z)
 
 /* Safe Reset */
-#define MYRESET LT(0, RESET)
+#define MYRESET LT(0, KC_F4)
 
 /* Tap: One-Shot Layer | Hold: Layer */
 #define OS_SYM LT(L_SYM, L_SYM)

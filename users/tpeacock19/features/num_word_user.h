@@ -12,24 +12,30 @@ num_word_press_user(uint16_t keycode)
     switch (keycode)
       {
       case KC_1 ... KC_0:
-      /* case KC_COMM: */
+      case MT(MOD_LSFT, KC_1):
+      case MT(MOD_LSFT, KC_0):
+      case KC_COMM:
       case KC_DOT:
-      /* case KC_SLSH: */
+      case KC_SLSH:
+      case COMPAR:
+      case DOTMIN:
+      case SLSEXC:
+      case OS_MODS:
       case KC_MINUS:
       case KC_ASTERISK:
+      case KC_DOLLAR:
       case KC_PLUS:
       case KC_COLON:
       case KC_EQUAL:
-      case MOD_SPC:
-      /* case KC_UNDS: */
-      case KC_SPC:
+      case KC_UNDS:
       case KC_BSPC:
-      case KC_X:
       case REPEAT:
       case OSM(MOD_LSFT):
       case KC_NO:
       case KC_UP:
       case KC_DOWN:
+      case KC_TAB:
+      case KC_ENT:
         return true;
       default:
         num_word_off();

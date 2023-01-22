@@ -1,12 +1,14 @@
 #pragma once
 
 #include "esc_mod.h"
-#include "os_toggle.h"
 
 #if !defined(NO_ACTION_TAPPING)
 # include "tapping.h"
 #endif
 
+#if defined(AUTO_SHIFT_ENABLE)
+# include "auto_shift_user.h"
+#endif
 
 #if defined(LAYER_LOCK_ENABLE)
 # include "layer_lock.h"

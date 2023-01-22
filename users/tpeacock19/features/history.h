@@ -18,14 +18,15 @@
 extern process_record_result_t process_history(uint16_t keycode,
                                                keyrecord_t *record);
 
-extern void tap_code_history(uint8_t keycode, keyrecord_t *record);
-extern void tap_code_mod_history(uint8_t keycode, uint8_t modifier,
+void tap_code_history(uint8_t keycode, keyrecord_t *record);
+void tap_code_mod_history(uint8_t keycode, uint8_t modifier,
                                  keyrecord_t *record);
-extern void tap_code_history16(uint16_t keycode, keyrecord_t *record);
-extern void tap_code_mod_history16(uint16_t keycode, uint8_t modifier,
+void tap_code_history16(uint16_t keycode, keyrecord_t *record);
+void tap_code_mod_history16(uint16_t keycode, uint8_t modifier,
                                    keyrecord_t *record);
 
-extern void clear_history_index(int n);
+void clear_history_keys(void);
+void clear_history_index(int n);
 
 typedef struct
 {

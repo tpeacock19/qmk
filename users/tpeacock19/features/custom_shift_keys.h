@@ -15,15 +15,6 @@ typedef struct
   uint16_t shifted_keycode;
 } custom_shift_key_t;
 
-/* typedef struct */
-/* { */
-/*   uint16_t keycode; */
-/*   uint8_t modifier; */
-/* } shifted_key_t; */
-
-/* struct shifted_key; */
-
-/* extern const custom_shift_key_t custom_shift_keys[]; */
 extern const custom_shift_key_t custom_shift_keys[] PROGMEM;
 extern const uint8_t NUM_CUSTOM_SHIFT_KEYS;
 

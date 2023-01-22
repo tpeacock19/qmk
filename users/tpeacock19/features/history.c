@@ -58,7 +58,7 @@ tap_code_mod_history16(uint16_t keycode, uint8_t modifier, keyrecord_t *record)
   get_history(1)->keydown = record->event.time;
 }
 
-static void
+void
 clear_history_keys(void)
 {
   memset(&history, 0, sizeof(history));
@@ -85,18 +85,38 @@ process_history(uint16_t keycode, keyrecord_t *record)
 
   switch (keycode)
     {
-    case QK_DEF_LAYER ... QK_DEF_LAYER_MAX:
-    case QK_MOMENTARY ... QK_MOMENTARY_MAX:
-    case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
-    case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:
-    case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
     case QK_TO ... QK_TO_MAX:
+    case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
+    case QK_MOMENTARY ... QK_MOMENTARY_MAX:
+    case QK_DEF_LAYER ... QK_DEF_LAYER_MAX:
+    case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
+    case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:
+    case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:
     case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
       return PROCESS_RECORD_CONTINUE;
     default:
       /* Default to the mod state prior to this key. */
       hmodifier = last_oneshot_mod_state | last_mod_state;
+      /* Handle Mod/Layer Tap keys. Extract the keycode when tapped, skip when
+         being held. */
+#ifndef NO_ACTION_TAPPING
+      switch (keycode)
+        {
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+# ifndef NO_ACTION_LAYER
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+# endif
+          if (record->tap.count == 0)
+            {
+              return PROCESS_RECORD_CONTINUE;
+            }
+          hkeycode = extract_base_tapping_keycode(keycode);
+        default:
+          hkeycode = keycode;
+        }
+#else
       hkeycode = keycode;
+#endif
 
 #if defined(AUTO_SHIFT_ENABLE)
       bool get_autoshift_shift_state(uint16_t keycode);
@@ -105,39 +125,29 @@ process_history(uint16_t keycode, keyrecord_t *record)
           hmodifier = MOD_BIT(KC_LSFT);
         }
 #endif
+
 #if defined(CAPS_WORD_ENABLE)
-      bool is_caps_word_on(void); /**< Gets whether currently active. */
+      bool is_caps_word_on(void);
       if (is_caps_word_on())
         {
           hmodifier = MOD_BIT(KC_LSFT);
         }
 #endif
-
-      if (keycode != KC_NO && keycode > SAFE_RANGE)
-        {
-          hmodifier = hmodifier | QK_MODS_GET_MODS(keycode);
-        }
-
-#ifndef NO_ACTION_TAPPING
-      switch (keycode)
+      /* We extract any modifiers from kcodes such as LCTL(KC_TAB). We need to
+         ignore Mod-Tap keycodes, since for some reason the modifier is still
+         present in the keycode. */
+      switch (hkeycode)
         {
         case QK_MOD_TAP ... QK_MOD_TAP_MAX:
-# ifndef NO_ACTION_LAYER
-        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
-# endif // NO_ACTION_LAYER
-          if (record->tap.count == 0)
-            {
-              /* Ignore holding events with Mod/Layer taps */
-              return PROCESS_RECORD_CONTINUE;
-            }
-          /* Set the keycode to the base tapping keycode of a mod- or layer-tap
-          key. */
-          hkeycode &= 0xff;
+          break;
+        default:
+          hmodifier = hmodifier | QK_MODS_GET_MODS(hkeycode);
         }
-#endif
+      /* Shift the history buffer and insert the current keycode and
+         modifiers. */
       shift_history_keys();
       get_history(1)->keycode = hkeycode;
-      get_history(1)->modifier = hmodifier | QK_MODS_GET_MODS(keycode);
+      get_history(1)->modifier = hmodifier;
       get_history(1)->keydown = record->event.time;
       deadline = record->event.time + HISTORY_TIMEOUT_MS;
       return PROCESS_RECORD_CONTINUE;

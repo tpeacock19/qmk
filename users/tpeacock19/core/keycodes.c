@@ -1,26 +1,30 @@
 #include "keycodes.h"
 
-#if defined(TAP_DANCE_ENABLE)
+#ifndef NO_ACTION_TAPPING
 bool
 is_key_on_tap(uint16_t keycode)
 {
   switch (keycode)
     {
     case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+# ifndef NO_ACTION_LAYER
     case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+# endif
       return true;
     }
   if ((keycode > CUSTOM_KEYCODE_START && keycode < CUSTOM_KEYCODE_END))
     {
       return true;
     }
+# if defined(TAP_DANCE_ENABLE)
   for (int i = TD_CODE_START + 1; i < TD_CODE_END; i++)
     {
       if (TD(i) == keycode)
-    {
-      return true;
+        {
+          return true;
+        }
     }
-    }
+# endif
   keycode = extract_base_tapping_keycode(keycode);
   if (IS_KEY(keycode))
     {

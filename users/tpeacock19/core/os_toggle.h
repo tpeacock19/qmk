@@ -1,6 +1,9 @@
 #pragma once
 
-#include "core/core.h"
+#include "core.h"
+#if defined(HISTORY_ENABLE)
+# include "features/history.h"
+#endif
 
 typedef enum
 {

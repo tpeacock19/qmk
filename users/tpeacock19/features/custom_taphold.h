@@ -2,7 +2,6 @@
 
 #include QMK_KEYBOARD_H
 #include "core/core.h"
-#include "os_toggle.h"
 #if defined(LAYER_LOCK_ENABLE)
 # include "layer_lock.h"
 #endif
