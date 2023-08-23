@@ -19,23 +19,23 @@
 //    // R_2STR(KC_T, "me@treypeacock.com" )
 //   END(1)
 // 
-START(2, KC_E, KC_N)
-  REP(1, KC_M, KC_L)
-  REP(2, KC_E, KC_U)
-  STRING(KC_T, "me@treypeacock.com" )
-  ALL(KC_V, KC_B)
-  END(2)
 
-START(2, KC_W, KC_W)
-  REP(1, KC_M, KC_L)
-  ALL(KC_F, KC_D, KC_L, KC_G)
-  STRING(KC_W, "me@treypeacock.com" )
-  END(2)
+// Emails
+START(1, KC_AT)
+  STRING(KC_AT, "me@treypeacock.com" )
+  STRING(KC_O, "online@treypeacock.com" )
+  STRING(KC_W, "trey.peacock@stentam.com" )
+  END(1)
+  
 
-START(1, KC_B)
-  ADD(KC_E, KC_X, KC_M)
-  ALL(KC_F, KC_D, KC_L)
-  STRING(KC_W, "me@treypeacock.com" )
+// START(2, KC_W, KC_W)
+//   REP(1, KC_M, KC_L)
+//   ALL(KC_F, KC_D, KC_L, KC_G)
+//   STRING(KC_W, "me@treypeacock.com" )
+//   END(2)
+
+START(1, KC_P)
+  REP(2, KC_F, KC_H)
   END(1)
 
 // START(1, KC_D)

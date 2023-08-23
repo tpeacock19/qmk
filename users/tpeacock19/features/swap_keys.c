@@ -19,48 +19,50 @@ swap_key(keyrecord_t *record)
     {
       uint16_t code = pgm_read_word(&swap_keys[i].keycode);
       uint16_t swap = pgm_read_word(&swap_keys[i].swapped_keycode);
-      uint16_t code_basic = QK_MODS_GET_BASIC_KEYCODE(code);
-      uint16_t swap_basic = QK_MODS_GET_BASIC_KEYCODE(swap);
+      uint16_t code_basic = extract_keycode_from(code);
+      uint16_t swap_basic = extract_keycode_from(swap);
+      uint8_t code_mods = extract_mods_from(code);
+      uint8_t swap_mods = extract_mods_from(swap);
       /* Modifiers are stored in history whether executed with a Keycode (such
       as Shift in KC_LPRN), One-Shot Modifiers, or Standard Modifiers */
-      if (get_history(1)->modifier == QK_MODS_GET_MODS(code))
+      if (get_history(1)->modifier == extract_mods_from(code))
         {
           /* One-Shot Modified keys register in the History Module as basic
           keycodes, so we check them first */
           if (get_history(1)->keycode == code_basic)
             {
               swapped_keycode = swap_basic;
-              swapped_modifier = QK_MODS_GET_MODS(swap);
+              swapped_modifier = swap_mods;
               break;
             }
           else if (get_history(1)->keycode == code)
             {
               swapped_keycode = swap;
-              swapped_modifier = QK_MODS_GET_MODS(swap);
+              swapped_modifier = swap_mods;
               break;
             }
         }
       /* If the key wasn't matched, try the second key in the swap pair.  */
-      if (!swapped_keycode)
+      if (!swapped_keycode
+          && get_history(1)->modifier == extract_mods_from(swap))
         {
-          if (get_history(1)->modifier == QK_MODS_GET_MODS(swap))
+          /* One-Shot Modified keys register in the History Module as basic
+          keycodes, so we check them first */
+          if (get_history(1)->keycode == swap_basic)
             {
-              /* One-Shot Modified keys register in the History Module as basic
-              keycodes, so we check them first */
-              if (get_history(1)->keycode == swap_basic)
-                {
-                  swapped_keycode = code_basic;
-                  swapped_modifier = QK_MODS_GET_MODS(code);
-                  break;
-                }
-              else if (get_history(1)->keycode == swap)
-                {
-                  swapped_keycode = code;
-                  swapped_modifier = QK_MODS_GET_MODS(code);
-                  break;
-                }
+              swapped_keycode = code_basic;
+              swapped_modifier = code_mods;
+              break;
+            }
+          else if (get_history(1)->keycode == swap)
+            {
+              swapped_keycode = code;
+              swapped_modifier = code_mods;
+              break;
             }
         }
+      else if (swapped_keycode)
+        break;
     }
 
   if (swapped_keycode != KC_NO)

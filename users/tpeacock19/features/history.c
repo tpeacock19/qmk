@@ -10,6 +10,14 @@ history_key_t history[HISTORY_SIZE] = {};
 
 static uint16_t deadline = 0;
 
+void
+set_history(uint16_t keycode, keyrecord_t *record)
+{
+  shift_history_keys();
+  get_history(1)->keycode = keycode;
+  get_history(1)->modifier = current_modifier;
+  get_history(1)->keydown = record->event.time;
+}
 history_key_t *
 get_history(int n)
 {
@@ -22,40 +30,20 @@ get_history(int n)
 void
 tap_code_history(uint8_t keycode, keyrecord_t *record)
 {
-  tap_code_mod_history(keycode, current_modifier, record);
-}
-
-/* Base function to tap and insert into history a basic keycode and modifiers.
- */
-void
-tap_code_mod_history(uint8_t keycode, uint8_t modifier, keyrecord_t *record)
-{
-  register_mods(modifier);
+  register_mods(current_modifier);
   tap_code(keycode);
-  unregister_mods(modifier);
-  shift_history_keys();
-  get_history(1)->keycode = keycode;
-  get_history(1)->modifier = modifier;
-  get_history(1)->keydown = record->event.time;
+  unregister_mods(current_modifier);
+  set_history(keycode, record);
 }
 
 void
 tap_code_history16(uint16_t keycode, keyrecord_t *record)
 {
-  tap_code_mod_history16(keycode, current_modifier, record);
-}
-
-void
-tap_code_mod_history16(uint16_t keycode, uint8_t modifier, keyrecord_t *record)
-{
-  modifier = modifier | QK_MODS_GET_MODS(keycode);
-  register_mods(modifier);
+  current_modifier = (current_modifier | extract_mods_from(keycode));
+  register_mods(current_modifier);
   tap_code16(keycode);
-  unregister_mods(modifier);
-  shift_history_keys();
-  get_history(1)->keycode = keycode;
-  get_history(1)->modifier = modifier;
-  get_history(1)->keydown = record->event.time;
+  unregister_mods(current_modifier);
+  set_history(keycode, record);
 }
 
 void
@@ -96,7 +84,9 @@ process_history(uint16_t keycode, keyrecord_t *record)
       return PROCESS_RECORD_CONTINUE;
     default:
       /* Default to the mod state prior to this key. */
-      hmodifier = last_oneshot_mod_state | last_mod_state;
+      hmodifier = last_modifier;
+      /* hkeycode = keycode; */
+      hkeycode = extract_keycode_from(keycode);
       /* Handle Mod/Layer Tap keys. Extract the keycode when tapped, skip when
          being held. */
 #ifndef NO_ACTION_TAPPING
@@ -110,13 +100,21 @@ process_history(uint16_t keycode, keyrecord_t *record)
             {
               return PROCESS_RECORD_CONTINUE;
             }
-          hkeycode = extract_base_tapping_keycode(keycode);
-        default:
-          hkeycode = keycode;
         }
-#else
-      hkeycode = keycode;
 #endif
+
+      /* We extract any modifiers from kcodes such as LCTL(KC_TAB). We need to
+         ignore Mod-Tap for Home Row Mods. */
+      switch (keycode)
+        {
+        case QK_BASIC ... QK_BASIC_MAX:
+          /* case QK_MODS ... QK_MODS_MAX: */
+
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+          break;
+        default:
+          hmodifier = last_modifier | extract_mods_from(keycode);
+        }
 
 #if defined(AUTO_SHIFT_ENABLE)
       bool get_autoshift_shift_state(uint16_t keycode);
@@ -127,22 +125,16 @@ process_history(uint16_t keycode, keyrecord_t *record)
 #endif
 
 #if defined(CAPS_WORD_ENABLE)
-      bool is_caps_word_on(void);
       if (is_caps_word_on())
         {
-          hmodifier = MOD_BIT(KC_LSFT);
+          hmodifier = hmodifier | MOD_BIT(KC_LSFT);
         }
 #endif
-      /* We extract any modifiers from kcodes such as LCTL(KC_TAB). We need to
-         ignore Mod-Tap keycodes, since for some reason the modifier is still
-         present in the keycode. */
-      switch (hkeycode)
-        {
-        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
-          break;
-        default:
-          hmodifier = hmodifier | QK_MODS_GET_MODS(hkeycode);
-        }
+      /* if (isShifted) */
+      /*   { */
+      /*     hmodifier = hmodifier | MOD_BIT(KC_LSFT); */
+      /*   } */
+
       /* Shift the history buffer and insert the current keycode and
          modifiers. */
       shift_history_keys();

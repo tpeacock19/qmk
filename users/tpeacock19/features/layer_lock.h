@@ -62,7 +62,6 @@
 #pragma once
 #include QMK_KEYBOARD_H
 #include "core/keycodes.h"
-#include "core/process_record.h"
 
 #if defined(__cplusplus)
 extern "C"

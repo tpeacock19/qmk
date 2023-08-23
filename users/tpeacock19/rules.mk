@@ -26,6 +26,7 @@ CUSTOM_TAPHOLD_ENABLE       = yes
 ESC_MOD_ENABLE              = yes
 OS_TOGGLE_ENABLE            = yes
 ADAPTIVE_KEYS_ENABLE        = no
+ACHORDION_ENABLE			= yes
 
 EXTRALDFLAGS                = -Wl,--relax
 SEND_STRING_ENABLE          = yes       # Enable Send String
@@ -48,14 +49,21 @@ RGB_MATRIX_ENABLE           = no		# RGB Matrix lighting
 OLED_ENABLE                 = no		# Oled capability
 CAPS_WORD_ENABLE            = yes
 GRAVE_ESC_ENABLE            = no
-AUTO_SHIFT_ENABLE           = yes
+AUTO_SHIFT_ENABLE           = no
 COMBO_ENABLE                = yes
-
 DYNAMIC_TAPPING_TERM_ENABLE = no
 
 SRC += $(USER_PATH)/core/keycodes.c
+SRC += $(USER_PATH)/features/process_record.c
 VPATH += $(USER_PATH)/features
 
+ifeq ($(strip $(ACHORDION_ENABLE)), yes)
+	SRC += $(USER_PATH)/features/achordion.c
+	OPT_DEFS += -DACHORDION_ENABLE
+endif
+ifeq ($(strip $(COMBO_ENABLE)), yes)
+	SRC += $(USER_PATH)/features/combo.c
+endif
 ifndef NO_ACTION_TAPPING
 	SRC += $(USER_PATH)/features/tapping.c
 endif

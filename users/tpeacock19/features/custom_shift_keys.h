@@ -18,7 +18,7 @@ typedef struct
 extern const custom_shift_key_t custom_shift_keys[] PROGMEM;
 extern const uint8_t NUM_CUSTOM_SHIFT_KEYS;
 
-bool key_shifted;
+extern uint16_t shifted_key;
 
 extern bool custom_shift_key(uint16_t keycode, keyrecord_t *record);
 

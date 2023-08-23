@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keycodes.h"
+#include "layers.h"
 #include QMK_KEYBOARD_H
 
 // Define os types
@@ -15,16 +16,17 @@ extern bool isOneShotLockedShift;
 extern bool isOneShotShift;
 extern bool isShifted;
 
-uint16_t current_timer;
-
 uint8_t current_mod_state;
 uint8_t current_oneshot_mod_state;
+uint8_t current_keycode_mod_state;
 uint8_t current_modifier;
 
 uint8_t current_layer;
 
 uint8_t last_mod_state;
 uint8_t last_oneshot_mod_state;
+uint8_t last_keycode_mod_state;
+uint8_t last_modifier;
 
 // Initialize variables holding the bitfield
 // representation of active modifiers.
@@ -48,18 +50,12 @@ typedef struct
 } xtap;
 #endif
 
-#ifndef NO_ACTION_TAPPING
-bool is_key_on_tap(uint16_t keycode);
-#endif
-
 // Custom Shortcuts
-
-uint16_t extract_base_tapping_keycode(uint16_t keycode);
-uint16_t extract_base_tapping_keycode16(uint16_t keycode);
 
 uint8_t extract_keycode_from(uint16_t keycode);
 uint8_t extract_mods_from(uint16_t keycode);
-uint8_t extract_tap_layer(uint16_t keycode);
+uint8_t extract_layer_from(uint16_t keycode);
+
 void clear_shift(void);
 
 #define GET_TAP_KC(dual_role_key) dual_role_key & 0xFF
@@ -141,36 +137,39 @@ enum custom_keycodes
 {
   // clang-format off
   CUSTOM_KEYCODE_START = SAFE_RANGE,
+  /* Layer Keycodes */
+  /* Home row mods */
+  /* ALT_R, SFT_S, CRL_T, GUI_D, */
+  /* ALT_I, SFT_E, CRL_N, GUI_H, */
+  /* NAV_SFT, OS_MODS, MOD_SPC, */
+
   TG_MAC, TG_WIN, TG_LIN,
-  SYM_RPT, SYM_REV,
-  NUM_REV, NUM_RPT,
+  /* SYM_RPT, SYM_REV, */
+  /* NUM_REV, NUM_RPT, */
 
   REPEAT, SWAPKEY,
   GOTOBASE, LLOCK,
 
   BASETOGG, NW_TOGG,
   /* Linger Keys */
-  LINBRC, LINPRN, LINCBR, LINQ,
+  /* LINBRC, LINPRN, LINCBR, LINQ, */
   /* Common shortcuts */
-  XCUT, XCOPY, XPAST, XUNDO, XREDO,
-  XWFWD, XWBAK, XSRCH, XWTOG,
+  /* XCUT, XCOPY, XPAST, XUNDO, XREDO, */
+  /* XWFWD, XWBAK, XSRCH, XWTOG, */
   XMAX, XWMOV, XWMOVL,
-  /* XMVR, XMVL,  */
-  XLOCK, XCLOSE,
-
-  // IDE shortcuts
-  MC_QUIK, MC_AUCO,
-  MC_QDOC, MC_FSYM, MC_RUN, MC_DBUG, MC_BUID,
-  MC_PROJ, MC_RECE, MC_COMP, MC_FIUS, MC_REFC,
-  MC_JOIN, MC_COMT,
+  /* XMVR, XMVL, */
+  /* XLOCK, XCLOSE, */
 
   CUSTOM_KEYCODE_END,
   // clang-format on
 };
 
-#define XCUT S(KC_DELETE)
-#define XCOPY C(KC_INSERT)
-#define XPAST S(KC_INSERT)
+/* #define XCUT S(KC_DELETE) */
+/* #define XCOPY C(KC_INSERT) */
+/* #define XPAST S(KC_INSERT) */
+#define XCUT LT(0, KC_DELETE)
+#define XCOPY LT(0, KC_INSERT)
+#define XPAST LT(0, KC_PAUSE)
 
 // Custom Tap-Hold
 
@@ -182,6 +181,7 @@ enum custom_keycodes
 #define XMVR LT(0, KC_F)
 #define XMVL LT(0, KC_G)
 #define XWMOV LT(0, KC_V)
+#define XWMOVL LT(0, KC_U)
 #define XLOCK LT(0, KC_X)
 #define XCLOSE LT(0, KC_J)
 #define XUNDO LT(0, KC_K)

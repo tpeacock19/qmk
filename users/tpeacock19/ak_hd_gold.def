@@ -10,51 +10,51 @@
 //    R_2STR(KC_M, "hello, world!" )
 //   -> "hello, world!"
 
-START(1, KC_A)
-  R_SCND(KC_E, KC_U)
-  END(1)
+// START(1, KC_U)
+//   ALL(KC_Y, LINQ)
+//   END(1)
 
 START(1, KC_B)
-  R_SCND(KC_D, KC_L)
+  REP(2, KC_D, KC_L)
   END(1)
 
 START(1, KC_S)
-  R_SCND(KC_N, KC_H)
+  REP(2, KC_N, KC_H)
   END(1)
 
 START(1, KC_M)
-  R_BOTH(KC_D, KC_P, KC_H)
+  ALL(KC_D, KC_P, KC_H)
   END(1)
 
 START(1, KC_M)
-  R_SCND(KC_G, KC_L)
-  R_SCND(KC_V, KC_B)
+  REP(2, KC_G, KC_L)
+  REP(2, KC_V, KC_B)
   END(1)
 
 START(1, KC_P)
-  R_SCND(KC_M, KC_L)
-  R_BOTH(KC_V, KC_L, KC_V)
+  REP(2, KC_M, KC_L)
+  REP(1, KC_V, KC_L)
   END(1)
 
 START(1, KC_N)
-  R_BOTH(KC_D, KC_T, KC_H)
+  ALL(KC_D, KC_T, KC_H)
   END(1)
 
 START(1, KC_L)
-  R_BOTH(KC_C, KC_C, KC_H)
+  ALL(KC_C, KC_C, KC_H)
   END(1)
 
 START(1, KC_H)
-  R_BOTH(KC_I, KC_W, KC_H)
+  ALL(KC_I, KC_W, KC_H)
   END(1)
 
 START(1, KC_D)
-  R_FRST(KC_B, KC_L)
+  REP(1, KC_B, KC_L)
   END(1)
 
 START(1, KC_G)
-  R_SCND(KC_M, KC_H)
-  R_SCND(KC_P, KC_L)
-  R_SCND(KC_V, KC_B)
+  REP(2, KC_M, KC_H)
+  REP(2, KC_P, KC_L)
+  REP(2, KC_V, KC_B)
   END(1)
   

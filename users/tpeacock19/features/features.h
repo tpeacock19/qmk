@@ -1,6 +1,20 @@
 #pragma once
 
 #include "esc_mod.h"
+#include "process_record.h"
+
+#if defined(ACHORDION_ENABLE)
+# include "achordion.h"
+# include "achordion_user.h"
+#endif
+
+#if defined(ADAPTIVE_KEYS_ENABLE)
+# include "features/adaptive_keys.h"
+#endif
+
+#if defined(COMBO_ENABLE)
+# include "combo.h"
+#endif
 
 #if !defined(NO_ACTION_TAPPING)
 # include "tapping.h"

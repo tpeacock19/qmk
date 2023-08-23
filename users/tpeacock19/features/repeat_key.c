@@ -1,12 +1,11 @@
 #include "repeat_key.h"
 
 bool key_repeated;
-extern bool key_shifted;
+extern uint16_t shifted_key;
 
 void
 repeat_key(const keyrecord_t *record)
 {
-  key_repeated = true;
   if (record->event.pressed)
     {
       register_mods(get_history(1)->modifier);
@@ -22,21 +21,23 @@ repeat_key(const keyrecord_t *record)
 process_record_result_t
 process_repeat_key(uint16_t keycode, keyrecord_t *record)
 {
-  key_repeated = false;
   if (repeat_key_press_user(keycode, record) && record->tap.count != 0)
     {
+      key_repeated = true;
 #if defined(CUSTOM_SHIFT_ENABLE)
-      if (key_shifted)
+      if (shifted_key != KC_NO)
         {
-          /* If custom shift is enabled we want to repeat that custom
-           * key */
-          custom_shift_key(get_history(1)->keycode, record);
+          tap_code_history16(shifted_key, record);
+          shifted_key = KC_NO;
+          return PROCESS_RECORD_RETURN_FALSE;
         }
       else
 #endif
-        repeat_key(record);
-      /* skip default processing */
-      return PROCESS_RECORD_RETURN_FALSE;
+        {
+          repeat_key(record);
+          return PROCESS_RECORD_RETURN_FALSE;
+        }
     }
+  key_repeated = false;
   return PROCESS_RECORD_CONTINUE;
 }

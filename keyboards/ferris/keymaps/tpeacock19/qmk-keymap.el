@@ -36,8 +36,8 @@
 ;; ** combos
 (defvar colemak-combo-keys
   '(;; Common
-    ;; ((t g) tab)
-    ;; ((d v) esc)
+    ((w f) z)
+    ((u y) linq)
     ;; ((m n) ent)
     ;; ((k h) bspc)
     ((C_t g) tab)
@@ -163,6 +163,12 @@
     (xwmov (RAW "XWMOV"))
     (xwmovl (RAW "XWMOVL"))
     (xclose (RAW "XCLOSE"))
+    (M_s (M s))
+    (S_n (S n))
+    (C_d (C d))
+    (G_c (G c))
+    (C_a (C a))
+    (G_u (G u))
     (M_r (M r))
     (S_s (S s))
     (C_t (C t))
@@ -225,6 +231,7 @@
     (licbr (RAW "LINCBR"))
     (liprn (RAW "LINPRN"))
     (librc (RAW "LINBRC"))
+    (linq (RAW "LINQ"))
     (llck (RAW "LLOCK"))
     (compar (RAW "COMPAR"))
     (dotmin (RAW "DOTMIN"))
@@ -240,8 +247,8 @@
      navsft oslmod                                                  mod_sp symrpt)
     ("l_gold" ;; hd-gold
      j      g      m      p      v             ?\;    ?\.    ?\/    ?\"    ?\'
-     r      s      n      d      b             ?\,    a      e      i      h
-     x      f      l      c      w             ?\-    u      o      y      k
+     r      M_s    S_n    C_d    b             ?\,    C_a    S_e    M_i    h
+     x      f      l      G_c    w             ?\-    G_u    o      y      k
      navsft mod_t                                                   mod_sp symrpt)
     ("l_sym"
      -x-    M_lt   ?\#    ?\:    ?\;           ?\=    ?\&    ?\@    M_gt   -x-
@@ -254,14 +261,15 @@
      x      ?\$    ?\*    8      -x-           bspc   9      compar dotmin slsexc
      lbase  ---                                                     ---    ---)
     ("l_mods"
-     -x-    xwbak  -x-    p_tab  -x-           -x-    n_tab  -x-    xwfwd   -x-
+     -x-    xwbak  pgdn   p_tab  -x-           -x-    n_tab  pgup   xwfwd   -x-
      oSwnav malt   mlsft  mctl   xredo         del    mctl   mlsft  malt   osmedia
      xundo  xcut   xcopy  mgui   xpaste        bspc   mgui   esc    tab    llck
-     lbase  ent                                                     ent    swapkey)
+     lbase  ---                                                     ent    swapkey)
     ("l_nav"
-     -x-    xwbak   ms_u   p_tab  -x-           -x-    n_tab  -x-    xwfwd   basetog
+     -x-    xwbak   ms_u   p_tab  -x-          -x-    n_tab  -x-    xwfwd   basetog
      -x-    ms_l   ms_d   ms_r   -x-           left   down   up     right  lemacs
-     tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   xwtog  tglin
+     tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   app    tglin
+     ;; tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   xwtog  tglin
      lbase  ---                                                     llck   oswnav)
     ("l_wnav"
      xclose xwbak   G-f    -x-    -x-           -x-    -x-    -x-    xwfwd   -x-
@@ -296,7 +304,7 @@
   '(
     ;; gold
     ((j g) z)
-    ((k u) q)
+    ((k u) linq)
     ((s n) "sh")
     ((n d) "th")
     ((l c) "ch")
@@ -804,7 +812,7 @@
      to_1   ---                                                  llck   to_2)))
 
 ;; * HD Gold
-(defvar colemak-combo-keys
+(defvar hd-gold-combo-keys
   '(((n mod_sp) ent)
     ((mod_t oslmod) esc)
     ((h mod_sp) bspc)
@@ -826,7 +834,7 @@
     ((e n) (RAW "CW_TOGG"))
     ((d a) (RAW "NUMWORD"))
     ((j g) z)
-    ((k u) q)
+    ((k u) linq)
     ;; ((s n) "sh")
     ;; ((n d) "th")
     ;; ((l c) "ch")
@@ -1017,6 +1025,7 @@
         (symbol-value (intern (format "%s-combo-keys" base)))))
   (org-babel-tangle-file (format "%s.org" base))
   (mugur-mugur (symbol-value keymap)))
+
 
 (provide 'qmk-keymap)
 ;;; qmk-keymap.el

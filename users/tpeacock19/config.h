@@ -2,10 +2,10 @@
 
 #ifndef NO_DEBUG
 # define NO_DEBUG
-#endif // !NO_DEBUG
+#endif
 #if !defined(NO_PRINT) && !defined(CONSOLE_ENABLE)
 # define NO_PRINT
-#endif // !NO_PRINT
+#endif
 
 // Optimization to save memory
 #ifndef NO_ACTION_MACRO
@@ -37,15 +37,20 @@
 #define TAPPING_TERM 150
 #define TAPPING_TERM_PER_KEY
 // Prevent auto-repeat when using Home Row Mods
-#define TAPPING_FORCE_HOLD_PER_KEY
+/* #define TAPPING_FORCE_HOLD_PER_KEY */
+#define QUICK_TAP_TERM TAPPING_TERM
+
 // Prevent normal rollover on alphas from accidentally triggering mods.
-#define IGNORE_MOD_TAP_INTERRUPT
+/* #define IGNORE_MOD_TAP_INTERRUPT */
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
 // Permissive hold only for Shift Home Row Mods
 #define PERMISSIVE_HOLD_PER_KEY
 
 // Tapping this number of times holds the key until tapped once again.
 #define ONESHOT_TAP_TOGGLE 3
 #define TAPPING_TOGGLE 2
+
 // Time (in ms) before the one shot code is released
 #define ONESHOT_TIMEOUT 2000
 #define CUSTOM_TAPHOLD_TIMEOUT 2000
@@ -66,9 +71,6 @@
 #endif
 
 // Configure combos
-/* #define EXTRA_SHORT_COMBOS */
-/* #define COMBO_MUST_TAP_PER_COMBO */
-/* #define COMBO_HOLD_TERM 175 */
 #if defined(COMBO_ENABLE)
 # if defined(COMBO_COUNT)
 #  undef COMBO_COUNT
@@ -78,25 +80,23 @@
 # define COMBO_ALLOW_ACTION_KEYS
 # define COMBO_STRICT_TIMER
 # define EXTRA_SHORT_COMBOS
+
 # if defined(COMBO_TERM)
 #  undef COMBO_TERM
 # endif
+# define COMBO_TERM (TAPPING_TERM / 3) // time to get all combo keys down
+# define COMBO_TERM_PER_COMBO
+
 # if defined(COMBO_HOLD_TERM)
 #  undef COMBO_HOLD_TERM
 # endif
-// these COMBO_TERM have dilicate interactions with ADAPTIVE_TERM below.
-# define COMBO_TERM (TAPPING_TERM / 4) // time to get all combo keys down
-/* #define COMBO_HOLD_TERM (TAPPING_TERM) // time to hold to trigger delayed
-    combo */
+# define COMBO_MUST_TAP_PER_COMBO
+# define COMBO_HOLD_TERM TAPPING_TERM
 #endif
 
-/* #if defined(COMBO_HOLD_TERM) // use COMBO_HOLD time as a standard reacation
-    time threshold */
-/* #endif */
-
-/* #undef ADAPTIVE_TERM   // ADAPTIVE_TERM should be smaller than TAPPING_TERM
- */
-#define ADAPTIVE_TERM (TAPPING_TERM / 2)
+#if defined(ADAPTIVE_KEYS_ENABLE)
+# define ADAPTIVE_TERM (TAPPING_TERM / 2)
+#endif
 
 // Dynamic macros
 /* #define DYNAMIC_MACRO_NO_NESTING */

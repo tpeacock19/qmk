@@ -72,38 +72,6 @@ clear_locked_and_oneshot_mods(void)
 }
 
 void
-clear_oneshot_mods_state(void)
-{
-  oneshot_locked_mods = get_oneshot_locked_mods();
-  oneshot_mods = get_oneshot_mods();
-  if (!(oneshot_locked_mods & MOD_LSFT) && (oneshot_mods & MOD_LSFT))
-    {
-      del_oneshot_mods(MOD_LSFT);
-      unregister_mods(MOD_LSFT);
-    }
-  if (!(oneshot_locked_mods & MOD_LCTL) && (oneshot_mods & MOD_LCTL))
-    {
-      del_oneshot_mods(MOD_LCTL);
-      unregister_mods(MOD_LCTL);
-    }
-  if (!(oneshot_locked_mods & MOD_LGUI) && (oneshot_mods & MOD_LGUI))
-    {
-      del_oneshot_mods(MOD_LGUI);
-      unregister_mods(MOD_LGUI);
-    }
-  if (!(oneshot_locked_mods & MOD_LALT) && (oneshot_mods & MOD_LALT))
-    {
-      del_oneshot_mods(MOD_LALT);
-      unregister_mods(MOD_LALT);
-    }
-  if (!(oneshot_locked_mods & MOD_RALT) && (oneshot_mods & MOD_RALT))
-    {
-      del_oneshot_mods(MOD_RALT);
-      unregister_mods(MOD_RALT);
-    }
-}
-
-void
 disable_oneshot_layer(void)
 {
   clear_oneshot_layer_state(ONESHOT_PRESSED);
@@ -113,7 +81,7 @@ disable_oneshot_layer(void)
 void
 disable_oneshot_mods(void)
 {
-  clear_oneshot_mods_state();
+  clear_oneshot_mods();
   custom_tapholds.timer = 0;
 }
 
@@ -135,10 +103,6 @@ check_oneshot_timeout(void)
       disable_oneshot_layer();
     }
 }
-
-/* __attribute__((weak)) void matrix_scan_user(void) { */
-/*   check_oneshot_timeout(); */
-/* } */
 
 void
 check_disable_oneshot_layer(uint16_t keycode)
@@ -192,8 +156,8 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
       }
    *****************************************************************************/
 
-  uint8_t tapkey = extract_base_tapping_keycode(keycode);
-  uint8_t layer = extract_tap_layer(keycode);
+  uint8_t tapkey = extract_keycode_from(keycode);
+  uint8_t layer = extract_layer_from(keycode);
 
   switch (keycode)
     {
@@ -214,7 +178,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XWMOV:
@@ -241,7 +205,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XWTOG:
@@ -268,7 +232,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XREDO:
@@ -295,7 +259,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XUNDO:
@@ -322,7 +286,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XCLOSE:
@@ -349,7 +313,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XLOCK:
@@ -370,7 +334,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XSRCH:
@@ -397,7 +361,88 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
+	}
+
+    case XPAST:
+      switch (oneshot_simple_record(record))
+	{
+	case TAP_PRESS:
+	  switch (os.type)
+	    {
+	    case WINDOWS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(S(KC_INSERT), record);
+#else
+	      tap_code16(S(KC_INSERT));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case LINUX:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(KC_PASTE, record);
+#else
+	      tap_code16(KC_PASTE);
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    default:
+	      break;
+	    }
+	default:
+	  return PROCESS_RECORD_RETURN_FALSE;
+	}
+
+    case XCUT:
+      switch (oneshot_simple_record(record))
+	{
+	case TAP_PRESS:
+	  switch (os.type)
+	    {
+	    case WINDOWS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(S(KC_DELETE), record);
+#else
+	      tap_code16(S(KC_DELETE));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case LINUX:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(KC_CUT, record);
+#else
+	      tap_code16(KC_CUT);
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    default:
+	      break;
+	    }
+	default:
+	  return PROCESS_RECORD_RETURN_FALSE;
+	}
+
+    case XCOPY:
+      switch (oneshot_simple_record(record))
+	{
+	case TAP_PRESS:
+	  switch (os.type)
+	    {
+	    case WINDOWS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(C(KC_INSERT), record);
+#else
+	      tap_code16(C(KC_INSERT));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case LINUX:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(KC_COPY, record);
+#else
+	      tap_code16(KC_COPY);
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    default:
+	      break;
+	    }
+	default:
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XWFWD:
@@ -407,16 +452,24 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	  switch (os.type)
 	    {
 	    case WINDOWS:
+#if defined(HISTORY_ENABLE)
 	      tap_code_history16(C(G(KC_RIGHT)), record);
+#else
+	      tap_code16(C(G(KC_RIGHT)));
+#endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
+#if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_WWW_FORWARD, record);
+#else
+	      tap_code16(KC_WWW_FORWARD);
+#endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
 	      break;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case XWBAK:
@@ -426,16 +479,24 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	  switch (os.type)
 	    {
 	    case WINDOWS:
+#if defined(HISTORY_ENABLE)
 	      tap_code_history16(C(G(KC_LEFT)), record);
+#else
+	      tap_code16(C(G(KC_LEFT)));
+#endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
+#if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_WWW_BACK, record);
+#else
+	      tap_code16(KC_WWW_BACK);
+#endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
 	      break;
 	    }
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case MOD_T:
@@ -473,7 +534,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    layer_off(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
       /*     case MOD_SPC: */
@@ -535,7 +596,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    layer_off(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
       /* Tap: One-Shot Layer | Hold: Layer */
@@ -560,7 +621,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    layer_off(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
       /* Tap: One-Shot Shift | Hold: Layer */
@@ -583,7 +644,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    }
 	  else
 	    {
-	      add_oneshot_mods(MOD_BIT(KC_LSFT));
+	      add_oneshot_mods(MOD_MASK_SHIFT);
 	      custom_tapholds.timer = timer_read();
 	    }
 	  return PROCESS_RECORD_RETURN_FALSE;
@@ -609,7 +670,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    layer_off(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
       /* Linger Keys  */
@@ -632,7 +693,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case LINPRN:
@@ -655,7 +716,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case LINCBR:
@@ -677,14 +738,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case LINQ:
       switch (oneshot_simple_record(record))
 	{
 	case INT_PRESS:
-
 	case TAP_PRESS:
 #if defined(HISTORY_ENABLE)
 	  tap_code_history(KC_Q, record);
@@ -695,9 +755,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	case HOLD_PRESS:
 #if defined(HISTORY_ENABLE)
 	  tap_code_history(KC_Q, record);
-	  clear_shift();
-	  disable_oneshot_mods();
-	  tap_code_mod_history(KC_U, 0, record);
+	  if (!is_caps_word_on())
+	    {
+	      clear_shift();
+	      disable_oneshot_mods();
+	      current_modifier = 0;
+	    }
+	  tap_code_history(KC_U, record);
 #else
 	  tap_code(KC_Q);
 	  clear_shift();
@@ -706,7 +770,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case SLSEXC:
@@ -731,7 +795,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case COMPAR:
@@ -753,15 +817,12 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case DOTMIN:
       switch (oneshot_simple_record(record))
 	{
-	case INT_RELEASE:
-	case TAP_RELEASE:
-	  return PROCESS_RECORD_RETURN_FALSE;
 	case INT_PRESS:
 	case TAP_PRESS:
 #if defined(HISTORY_ENABLE)
@@ -786,7 +847,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 		  tap_code(KC_BSPC);
 		  tap_code(KC_DOT);
 #if defined(HISTORY_ENABLE)
-		  tap_code_mod_history(KC_DOT, 0, record);
+		  tap_code_history(KC_DOT, record);
 		}
 	      else
 		tap_code_history(KC_DOT, record);
@@ -797,7 +858,14 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(LSFT(KC_DOT), record);
 	    }
 	  else
-	    tap_code_history(KC_DOT, record);
+	    {
+	      tap_code_history(KC_DOT, record);
+	      /* register_mods(current_modifier); */
+	      /* tap_code(KC_DOT); */
+	      /* unregister_mods(current_modifier); */
+	      /* current_modifier = 0; */
+	      /* set_history(KC_DOT, record); */
+	    }
 #else
 	      tap_code(KC_DOT);
 	    }
@@ -813,7 +881,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case MYRESET:
@@ -829,7 +897,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    }
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 
     case GOTOBASE:
@@ -845,8 +913,9 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
+
     case BASETOGG:
       switch (oneshot_simple_record(record))
 	{
@@ -857,7 +926,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
-	  break;
+	  return PROCESS_RECORD_RETURN_FALSE;
 	}
     }
   /* check_disable_oneshot(keycode ); */
