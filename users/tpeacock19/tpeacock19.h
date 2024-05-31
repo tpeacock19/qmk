@@ -7,6 +7,6 @@
 
 #include "features/features.h"
 
-#if defined(CAPS_WORD_ENABLE)
-# include "quantum/caps_word.h"
-#endif
+/* #if defined(CAPS_WORD_ENABLE) */
+/* # include "quantum/caps_word.h" */
+/* #endif */

@@ -18,9 +18,9 @@ extern const repeat_key_t repeat_keys[];
 
 bool key_repeated;
 
-extern void repeat_key(const keyrecord_t *record);
+extern void repeat_key(keyrecord_t *record);
 
-extern process_record_result_t process_repeat_key(uint16_t keycode,
+extern process_record_result_t process_custom_repeat_key(uint16_t keycode,
                                                   keyrecord_t *record);
 
 __attribute__((weak)) bool repeat_key_press_user(uint16_t keycode,

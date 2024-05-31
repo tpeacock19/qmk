@@ -46,6 +46,7 @@
 
 #if defined(SWAP_KEYS_ENABLE)
 # include "swap_keys.h"
+# include "swap_keys_user.h"
 #endif
 
 #if defined(HISTORY_ENABLE)
@@ -57,7 +58,7 @@
 # include "num_word_user.h"
 #endif
 
-#if defined(REPEAT_KEYS_ENABLE)
-# include "repeat_key.h"
-# include "repeat_key_user.h"
+#if defined(CUSTOM_REPEAT_KEY_ENABLE)
+# include "custom_repeat_key.h"
+# include "custom_repeat_key_user.h"
 #endif

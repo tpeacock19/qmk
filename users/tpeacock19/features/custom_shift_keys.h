@@ -15,7 +15,11 @@ typedef struct
   uint16_t shifted_keycode;
 } custom_shift_key_t;
 
+# if defined CONTROLLER && CONTROLLER==atmel-dfu
 extern const custom_shift_key_t custom_shift_keys[] PROGMEM;
+#else
+extern const custom_shift_key_t custom_shift_keys[];
+#endif
 extern const uint8_t NUM_CUSTOM_SHIFT_KEYS;
 
 extern uint16_t shifted_key;

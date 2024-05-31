@@ -13,11 +13,11 @@ process_adaptive_key(uint16_t keycode, keyrecord_t *record)
 #define START1(flag, key, ...)                                  \
  /* check current keycode & previous one */                     \
  if (!timer_expired(record->event.time,                         \
-                    (get_history(1)->keydown + ADAPTIVE_TERM))) \
+                    (get_history(1)->record.keydown + ADAPTIVE_TERM))) \
   {                                                             \
    sindex = flag;                                               \
    rindex = 0;                                                  \
-   switch (get_history(1)->keycode)                             \
+   switch (get_history(1)->record.keycode)                     \
     {                                                           \
     case key:                                                   \
      switch (QK_MODS_GET_BASIC_KEYCODE(keycode))                \
@@ -29,10 +29,10 @@ process_adaptive_key(uint16_t keycode, keyrecord_t *record)
 
 #define START2(flag, key, key2, ...)                            \
  /* check term for two previous */                              \
- if (!timer_expired(get_history(1)->keydown,                    \
-                    (get_history(2)->keydown + ADAPTIVE_TERM))) \
+ if (!timer_expired(get_history(1)->record.keydown,                    \
+                    (get_history(2)->record.keydown + ADAPTIVE_TERM))) \
   {                                                             \
-   switch (get_history(2)->keycode)                             \
+   switch (get_history(2)->record.keycode)                     \
     {                                                           \
     case key:                                                   \
      START1(2, key2)
@@ -78,7 +78,7 @@ process_adaptive_key(uint16_t keycode, keyrecord_t *record)
   if (d > 1)                                  \
    {                                          \
     for (uint8_t i = sindex; i > rindex; i--) \
-     tap_code(get_history(i - 1)->keycode);   \
+     tap_code(get_history(i - 1)->record.keycode);   \
    }                                          \
   if (d > 0 && d != 0)                        \
    {                                          \

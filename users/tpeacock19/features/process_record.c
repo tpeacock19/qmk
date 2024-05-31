@@ -9,16 +9,26 @@ process_record_keymap(uint16_t keycode, keyrecord_t *record)
 bool
 process_record_user(uint16_t keycode, keyrecord_t *record)
 {
-  current_mod_state = get_mods();
-  current_oneshot_mod_state = get_oneshot_mods();
+  current_modifier = get_mods() | get_weak_mods();
+#ifndef NO_ACTION_ONESHOT
+  current_modifier |= get_oneshot_mods();
+#endif // NO_ACTION_ONESHOT
+  /* current_modifier |= extract_mods_from(keycode); */
+#if defined(CAPS_WORD_ENABLE)
+  if (is_caps_word_on())
+    {
+      current_modifier |= MOD_BIT(KC_LSFT);
+    }
+#endif
   current_keycode_mod_state = extract_mods_from(keycode);
-  current_modifier = current_oneshot_mod_state | current_mod_state;
   current_layer = get_highest_layer(layer_state);
-
   isOneShotLockedShift = get_oneshot_locked_mods() & MOD_MASK_SHIFT;
   isOneShotShift = get_oneshot_mods() & MOD_MASK_SHIFT || isOneShotLockedShift;
   isShifted = isOneShotShift || get_mods() & MOD_MASK_SHIFT;
-
+  if (isShifted)
+    {
+      current_modifier |= MOD_BIT(KC_LSFT);
+    }
 #if defined(ACHORDION_ENABLE)
   if (!process_achordion(keycode, record))
     {
@@ -55,8 +65,8 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
     };
 #endif
 
-#if defined(REPEAT_KEYS_ENABLE)
-  switch (process_repeat_key(keycode, record))
+#if defined(CUSTOM_REPEAT_KEY_ENABLE)
+  switch (process_custom_repeat_key(keycode, record))
     {
     case PROCESS_RECORD_RETURN_TRUE:
       return true;
@@ -86,8 +96,8 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
     };
 #endif
 
-#if defined(CUSTOM_TAPHOLD_ENABLE)
-  switch (process_custom_taphold(keycode, record))
+#if defined(SWAP_KEYS_ENABLE)
+  switch (process_swap_key(keycode, record))
     {
     case PROCESS_RECORD_RETURN_TRUE:
       return true;
@@ -98,8 +108,8 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
     };
 #endif
 
-#if defined(SWAP_KEYS_ENABLE)
-  switch (process_swap_key(keycode, record))
+#if defined(CUSTOM_TAPHOLD_ENABLE)
+  switch (process_custom_taphold(keycode, record))
     {
     case PROCESS_RECORD_RETURN_TRUE:
       return true;
@@ -147,10 +157,7 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
     };
 #endif
 
-  last_mod_state = current_mod_state;
-  last_oneshot_mod_state = current_oneshot_mod_state;
-  last_keycode_mod_state = current_keycode_mod_state;
-  last_modifier = current_modifier;
+  /* last_modifier = current_modifier; */
 
   return true;
 };

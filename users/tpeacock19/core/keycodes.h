@@ -23,20 +23,17 @@ uint8_t current_modifier;
 
 uint8_t current_layer;
 
-uint8_t last_mod_state;
-uint8_t last_oneshot_mod_state;
-uint8_t last_keycode_mod_state;
 uint8_t last_modifier;
 
 // Initialize variables holding the bitfield
 // representation of active modifiers.
 layer_state_t last_layer_state;
 
-struct key_mods
-{
-  uint16_t keycode;
-  uint8_t modifier;
-};
+/* struct key_mods */
+/* { */
+/*   uint16_t keycode; */
+/*   uint8_t modifier; */
+/* }; */
 
 // Tap dance codes
 #if defined(TAP_DANCE_ENABLE)

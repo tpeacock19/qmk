@@ -6,11 +6,19 @@ get_tapping_term(uint16_t keycode, keyrecord_t *record)
 {
   for (int i = 0; i < NUM_TAPPING_TERM_KEYS; ++i)
     {
+#if defined CONTROLLER && CONTROLLER==atmel-dfu
       if (keycode == pgm_read_word(&tapping_term_keys[i].keycode))
         {
           return TAPPING_TERM
                  + pgm_read_word(&tapping_term_keys[i].tapping_term);
         }
+#else
+      if (keycode == tapping_term_keys[i].keycode)
+        {
+          return TAPPING_TERM
+                 + tapping_term_keys[i].tapping_term;
+        }
+#endif
     }
   return TAPPING_TERM;
 }

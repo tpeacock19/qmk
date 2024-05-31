@@ -16,18 +16,6 @@
 # 5934 without autoshift 4736 with = 1198 Autoshift
 # Optimize size but this may cause error "relocation truncated to fit"
 
-LAYER_LOCK_ENABLE           = yes
-CUSTOM_SHIFT_ENABLE         = yes
-SWAP_KEYS_ENABLE            = yes
-HISTORY_ENABLE              = yes
-NUMWORD_ENABLE              = yes
-REPEAT_KEYS_ENABLE          = yes
-CUSTOM_TAPHOLD_ENABLE       = yes
-ESC_MOD_ENABLE              = yes
-OS_TOGGLE_ENABLE            = yes
-ADAPTIVE_KEYS_ENABLE        = no
-ACHORDION_ENABLE			= yes
-
 EXTRALDFLAGS                = -Wl,--relax
 SEND_STRING_ENABLE          = yes       # Enable Send String
 BOOTMAGIC_ENABLE            = yes       # Enable Bootmagic Lite
@@ -41,7 +29,7 @@ COMMAND_ENABLE              = no		# Deprecated magic commands
 MAGIC_ENABLE                = no		# Magic commands after init
 SPACE_CADET_ENABLE          = no		# Space Cadet Features
 KEY_LOCK_ENABLE             = no		# Not using Key Lock
-NKRO_ENABLE                 = no		# Disable N-Key Rollover
+NKRO_ENABLE                 = yes		# Enable N-Key Rollover
 AUDIO_ENABLE                = no		# Audio direct from keyboard to speaker
 MUSIC_ENABLE                = no		# Maps columns/rows to chromatic/octaves
 RGBLIGHT_ENABLE             = no		# RGB LED controls
@@ -50,7 +38,6 @@ OLED_ENABLE                 = no		# Oled capability
 CAPS_WORD_ENABLE            = yes
 GRAVE_ESC_ENABLE            = no
 AUTO_SHIFT_ENABLE           = no
-COMBO_ENABLE                = yes
 DYNAMIC_TAPPING_TERM_ENABLE = no
 
 SRC += $(USER_PATH)/core/keycodes.c
@@ -91,9 +78,9 @@ ifeq ($(strip $(HISTORY_ENABLE)), yes)
 	SRC += $(USER_PATH)/features/history.c
 	OPT_DEFS += -DHISTORY_ENABLE
 endif
-ifeq ($(strip $(REPEAT_KEYS_ENABLE)), yes)
-	SRC += $(USER_PATH)/features/repeat_key.c
-	OPT_DEFS += -DREPEAT_KEYS_ENABLE
+ifeq ($(strip $(CUSTOM_REPEAT_KEY_ENABLE)), yes)
+	SRC += $(USER_PATH)/features/custom_repeat_key.c
+	OPT_DEFS += -DCUSTOM_REPEAT_KEY_ENABLE
 endif
 ifeq ($(strip $(CUSTOM_TAPHOLD_ENABLE)), yes)
 	SRC += $(USER_PATH)/features/custom_taphold.c

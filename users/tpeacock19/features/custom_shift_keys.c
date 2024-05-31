@@ -12,7 +12,11 @@ custom_shift_key(uint16_t keycode, keyrecord_t *record)
     }
   for (int i = 0; i < NUM_CUSTOM_SHIFT_KEYS; ++i)
     {
+#if defined CONTROLLER && CONTROLLER==atmel-dfu
       if (keycode == pgm_read_word(&custom_shift_keys[i].keycode))
+#else
+      if (keycode == custom_shift_keys[i].keycode)
+#endif
         {
           if (record->event.pressed)
             {
@@ -21,9 +25,14 @@ custom_shift_key(uint16_t keycode, keyrecord_t *record)
                 {
                   return false;
                 }
-              // Continue default handling if this is a tap-hold key being held.
+                // Continue default handling if this is a tap-hold key being
+                // held.
+#if defined CONTROLLER && CONTROLLER==atmel-dfu
               shifted_key
                 = pgm_read_word(&custom_shift_keys[i].shifted_keycode);
+#else
+              shifted_key = custom_shift_keys[i].shifted_keycode;
+#endif
 #if defined(CUSTOM_TAPHOLD_ENABLE)
               disable_oneshot_layer();
               disable_oneshot_mods();

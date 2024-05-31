@@ -10,7 +10,11 @@ typedef struct
   int tapping_term;
 } tapping_term_per_key_t;
 
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 extern const tapping_term_per_key_t tapping_term_keys[] PROGMEM;
+#else
+extern const tapping_term_per_key_t tapping_term_keys[];
+#endif
 extern const uint8_t NUM_TAPPING_TERM_KEYS;
 
 /* extern uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record); */

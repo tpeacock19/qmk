@@ -5,8 +5,8 @@
 #include "core/core.h"
 #include "send_string/send_string.h"
 
-#if defined(REPEAT_KEYS_ENABLE)
-# include "repeat_key.h"
+#if defined(CUSTOM_REPEAT_KEY_ENABLE)
+# include "custom_repeat_key.h"
 #endif
 
 #if defined(SWAP_KEYS_ENABLE)
@@ -27,14 +27,14 @@ void clear_history_index(int n);
 
 typedef struct
 {
-  uint16_t keycode;
   uint8_t modifier;
-  uint16_t keydown;
+  keyrecord_t record;
 } history_key_t;
 
 extern history_key_t *get_history(int n);
 
 extern void shift_history_keys(void);
-extern void set_history(uint16_t keycode, keyrecord_t *record);
+extern void set_history(uint16_t keycode, keyrecord_t record,
+                        uint8_t current_modifier);
 
 extern void history_matrix_scan_user(void);

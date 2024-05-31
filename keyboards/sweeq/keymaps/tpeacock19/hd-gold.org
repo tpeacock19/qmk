@@ -1,0 +1,6 @@
+#+title: Hd Gold
+
+ #+begin_src c :tangle "~/qmk/qmk_firmware/users/tpeacock19/core/base_keymap.h"
+#pragma once
+#define BASE_HD_GOLD
+ #+end_src

@@ -17,6 +17,9 @@
 
 #pragma once
 
+/*****************************************************************************
+ *                                   mugur                                   * 
+ *****************************************************************************/
 
  // START-MUGUR-REGION
 
@@ -26,11 +29,11 @@
 
 #define LEADER_TIMEOUT 200
 #undef LEADER_PER_KEY_TIMING
-
+#define COMBO_COUNT 27
 #define FORCE_NKRO
 #undef RGBLIGHT_ANIMATIONS 
 
-// END-MUGUR-REGION                                                                                                                                                                                                                                                                 
+// END-MUGUR-REGION                                                                                                                                                                                                                                                                  
 
 /* #define PERMISSIVE_HOLD */
 /* #undef NO_AUTO_SHIFT_ALPHA */

@@ -1,8 +1,5 @@
 #include "tpeacock19.h"
-
-#if defined(COMBO_ENABLE)
-# include "keyboards/gboards/g/keymap_combo.h"
-#endif
+#include <stdint.h>
 
 /* #if defined(ACHORDION_ENABLE) */
 /* # include "features/achordion.h" */
@@ -15,18 +12,27 @@
 /* #endif */
 
 #if defined(COMBO_TERM_PER_COMBO)
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 const combo_term_per_combo_t combo_terms[] PROGMEM = {
-  { OS_MODS, KC_NO, 10 },
-  { MOD_SPC, KC_NO, 10 },
+# else
+const combo_term_per_combo_t combo_terms[] = {
+# endif
+
+  { OS_MODS, KC_NO, -100 },
+  { MOD_SPC, KC_NO, -100 },
   { MOD_T, KC_NO, 10 },
 };
-
+  
 const uint8_t NUM_COMBO_TERMS
   = sizeof(combo_terms) / sizeof(combo_term_per_combo_t);
 #endif
 
 #if defined(TAPPING_TERM_PER_KEY)
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 const tapping_term_per_key_t tapping_term_keys[] PROGMEM = {
+# else
+const tapping_term_per_key_t tapping_term_keys[] = {
+# endif
   { GUI_D, 50 },    // Shift . is ?
   { GUI_H, 50 },    // Shift . is ?
   { NUM_RPT, -10 }, // Shift . is ?
@@ -38,7 +44,11 @@ const uint8_t NUM_TAPPING_TERM_KEYS
 #endif
 
 #if defined(CUSTOM_SHIFT_ENABLE)
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 const custom_shift_key_t custom_shift_keys[] PROGMEM = {
+# else
+const custom_shift_key_t custom_shift_keys[] = {
+# endif
   /* Emacs */
   { KC_COLON, KC_SEMICOLON },		    // Shift : is ;
   { KC_SEMICOLON, KC_EXCLAIM },		    // Shift : is ;
@@ -50,9 +60,23 @@ const uint8_t NUM_CUSTOM_SHIFT_KEYS
 #endif
 
 #if defined(SWAP_KEYS_ENABLE)
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
+const uint16_t swap_pairs[][2] PROGMEM = {
+# else
+const uint16_t swap_pairs[][2] = {
+# endif
+  { KC_F, KC_B },	// Forward / Backward.
+  { C(KC_F), C(KC_B) }, // {forward,backward}-char
+};
+const uint16_t NUM_SWAP_PAIRS = sizeof(swap_pairs) / sizeof(swap_pair_t);
+
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 const swap_key_t swap_keys[] PROGMEM = {
-  { KC_TAB, S(KC_TAB) },       // tab (button) forward/backward
-  { C(KC_TAB), C(S(KC_TAB)) }, // tabs forward/backward
+# else
+const swap_key_t swap_keys[] = {
+# endif
+  /* { KC_TAB, S(KC_TAB) },       // tab (button) forward/backward */
+  /* { C(KC_TAB), C(S(KC_TAB)) }, // tabs forward/backward */
   /* Emacs */
   { C(KC_F), C(KC_B) },		  // {forward,backward}-char
   { A(KC_F), A(KC_B) },		  // {forward,backward}-word

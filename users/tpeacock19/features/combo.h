@@ -10,7 +10,11 @@ typedef struct
   int combo_term;
 } combo_term_per_combo_t;
 
+# if defined CONTROLLER && CONTROLLER == atmel-dfu
 extern const combo_term_per_combo_t combo_terms[] PROGMEM;
+#else
+extern const combo_term_per_combo_t combo_terms[];
+#endif
 extern const uint8_t NUM_COMBO_TERMS;
 
 extern uint16_t get_combo_term(uint16_t index, combo_t *combo);

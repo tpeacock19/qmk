@@ -17,9 +17,31 @@
 USER_NAME := tpeacock19
 SRC += tpeacock19.c
 
+LAYER_LOCK_ENABLE           = yes
+CUSTOM_SHIFT_ENABLE         = yes
+SWAP_KEYS_ENABLE            = yes
+HISTORY_ENABLE              = yes
+NUMWORD_ENABLE              = yes
+CUSTOM_REPEAT_KEY_ENABLE	= yes
+REPEAT_KEY_ENABLE           = no
+CUSTOM_TAPHOLD_ENABLE       = yes
+ESC_MOD_ENABLE              = yes
+OS_TOGGLE_ENABLE            = yes
+ADAPTIVE_KEYS_ENABLE        = no
+ACHORDION_ENABLE			= yes
+
+
+######################################################################
+#                               Elite-C                               #
+######################################################################
+
 # for Elite-C controller
 undefine BOOTLOADER
 BOOTLOADER = atmel-dfu
+
+######################################################################
+#                                mugur                                #
+######################################################################
 
  # START-MUGUR-REGION
 
@@ -29,5 +51,5 @@ RGBLIGHT_ENABLE  = no
 TAP_DANCE_ENABLE = no
 COMBO_ENABLE     = yes 
 
-# END-MUGUR-REGION                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+# END-MUGUR-REGION                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 

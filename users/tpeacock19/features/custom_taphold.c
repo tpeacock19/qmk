@@ -1,4 +1,5 @@
 #include "custom_taphold.h"
+#include "caps_word.h"
 #include "history.h"
 #include "keycodes.h"
 
@@ -252,7 +253,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_AGAIN, record);
 #else
-	      tap_code_history16(KC_AGAIN);
+	      tap_code16(KC_AGAIN);
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
@@ -279,7 +280,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_UNDO, record);
 #else
-	      tap_code_history16(KC_UNDO);
+	      tap_code16(KC_UNDO);
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
@@ -306,7 +307,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(S(G(KC_Q)), record);
 #else
-	      tap_code_history16(S(G(KC_Q)));
+	      tap_code16(S(G(KC_Q)));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
@@ -631,13 +632,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	{
 	case INT_PRESS:
 	case TAP_PRESS:
-	  if (record->tap.count == 2)
+#if defined(CAPS_WORD_ENABLE)
+	  if (is_caps_word_on() || record->tap.count == 2)
 	    {
 	      clear_shift();
-#if defined(CAPS_WORD_ENABLE)
 	      caps_word_toggle();
-#endif
 	    }
+#endif
 	  else if (isShifted)
 	    {
 	      clear_shift();
@@ -847,6 +848,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 		  tap_code(KC_BSPC);
 		  tap_code(KC_DOT);
 #if defined(HISTORY_ENABLE)
+                  current_modifier = 0;
 		  tap_code_history(KC_DOT, record);
 		}
 	      else

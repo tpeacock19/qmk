@@ -1,8 +1,9 @@
 #include "keycodes.h"
 #undef CONTROLLER
-#define CONTROLLER atmel-dfu
+#define CONTROLLER RP2040
 #include "tpeacock19.h"
 
+/* combo_t key_combos[0] = {}; */
 
  // START-MUGUR-REGION
 
@@ -109,4 +110,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Per Key Tapping Terms */
  
 
-// END-MUGUR-REGION            
+// END-MUGUR-REGION                   
