@@ -85,22 +85,22 @@ process_history(uint16_t keycode, keyrecord_t *record)
       return PROCESS_RECORD_CONTINUE;
     default:
       /* Handle Mod/Layer Tap keys. Extract the keycode when tapped, skip when
-         being held. */
+	 being held. */
 #ifndef NO_ACTION_TAPPING
       switch (keycode)
-        {
-        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+	{
+	case QK_MOD_TAP ... QK_MOD_TAP_MAX:
 # ifndef NO_ACTION_LAYER
-        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+	case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
 # endif
-          if (record->tap.count == 0)
-            {
-              return PROCESS_RECORD_CONTINUE;
-            }
-        }
+	  if (record->tap.count == 0)
+	    {
+	      return PROCESS_RECORD_CONTINUE;
+	    }
+	}
 #endif
       /* Shift the history buffer and insert the current keycode and
-         modifiers. */
+	 modifiers. */
       if (record->event.pressed)
         {
           shift_history_keys();

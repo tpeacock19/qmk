@@ -158,6 +158,7 @@
     (xundo (RAW "XUNDO"))
     (xwfwd (RAW "XWFWD"))
     (xwtog (RAW "XWTOG"))
+    (xwtog (RAW "XWTOGL"))
     (xwbak (RAW "XWBAK"))
     (xsrch (RAW "XSRCH"))
     (xwmov (RAW "XWMOV"))
@@ -194,7 +195,7 @@
     (G-9 (RAW "G(KC_9)"))
     (mnrght (RAW "G(KC_EQL)"))
     (mnlft (RAW "G(KC_MINS)"))
-    (wlck (RAW "G(KC_L)"))
+    (wlck (RAW "XLOCK"))
     (Gtab (RAW "G(KC_TAB)"))
     (GStab (RAW "S(G(KC_TAB))"))
     ;; wnav
@@ -226,6 +227,7 @@
     (basetog (RAW "BASETOGG"))
     (tgmac (RAW "TG_MAC"))
     (tgwin (RAW "TG_WIN"))
+    (tgos (RAW "TG_OS"))
     (tglin (RAW "TG_LIN"))
     (gtbase (RAW "GOTOBASE"))
     (licbr (RAW "LINCBR"))
@@ -268,13 +270,13 @@
     ("l_nav"
      -x-    xwbak   ms_u   p_tab  -x-          -x-    n_tab  -x-    xwfwd   basetog
      -x-    ms_l   ms_d   ms_r   -x-           left   down   up     right  lemacs
-     tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   app    tglin
+     tgos  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   app    tglin
      ;; tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   xwtog  tglin
      lbase  ---                                                     llck   oswnav)
     ("l_wnav"
      xclose xwbak   G-f    -x-    -x-           -x-    -x-    -x-    xwfwd   -x-
      G-6    G-4    G-0    G-2    G-right       G-left G-3    G-1    G-5    G-7
-     wlck   -x-    G-n    G-8    mnrght        mnlft  G-9    G-e    xwtog  -x-
+     wlck   xwtogl    G-n    G-8    mnrght        mnlft  G-9    G-e    xwtog  -x-
      lbase  ---                                                     xsrch  Gtab)
     ("l_swnav"
      xclose xwbak   G-f    -x-    -x-           -x-   -x-    GS_u   xwfwd   -x-

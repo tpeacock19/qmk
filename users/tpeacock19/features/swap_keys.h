@@ -22,10 +22,10 @@ typedef struct
   uint16_t swapped_keycode;
 } swap_key_t;
 
-extern bool key_swapped;
+bool key_swapped;
 
 /* extern const swap_key_t swap_keys[]; */
-# if defined CONTROLLER && CONTROLLER == atmel-dfu
+#if defined CONTROLLER && CONTROLLER == atmel - dfu
 extern const swap_key_t swap_keys[] PROGMEM;
 extern const uint16_t swap_pairs[][2] PROGMEM;
 #else
@@ -39,10 +39,10 @@ extern const uint16_t NUM_SWAP_PAIRS;
  * *record); */
 
 extern process_record_result_t process_swap_key(uint16_t keycode,
-                                                keyrecord_t *record);
+						keyrecord_t *record);
 
 __attribute__((weak)) bool swap_key_press_user(uint16_t keycode,
-                                               keyrecord_t *record);
+					       keyrecord_t *record);
 
-__attribute__((weak)) uint16_t
-find_swap_keycode_user(uint16_t keycode, uint8_t mods);
+__attribute__((weak)) uint16_t find_swap_keycode_user(uint16_t keycode,
+						      uint8_t mods);

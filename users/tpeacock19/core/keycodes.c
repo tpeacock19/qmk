@@ -10,7 +10,7 @@ extract_mods_from(uint16_t keycode)
       return QK_MODS_GET_MODS(keycode);
     case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
     case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:
-      return ((keycode) &0x1F);
+      return ((keycode) & 0x1F);
     case QK_MOD_TAP ... QK_MOD_TAP_MAX:
       return QK_MOD_TAP_GET_MODS(keycode);
     default:
@@ -47,7 +47,7 @@ extract_layer_from(uint16_t keycode)
     case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
     case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX: // `TT(layer)`.
     case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
-      return ((keycode) &0x1F);
+      return ((keycode) & 0x1F);
     case QK_LAYER_MOD ... QK_LAYER_MOD_MAX:
       return QK_LAYER_MOD_GET_LAYER(keycode);
     case QK_LAYER_TAP ... QK_LAYER_TAP_MAX: // `LT(layer, key)` keys.

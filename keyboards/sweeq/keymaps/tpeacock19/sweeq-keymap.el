@@ -138,6 +138,7 @@
     (xundo (RAW "XUNDO"))
     (xwfwd (RAW "XWFWD"))
     (xwtog (RAW "XWTOG"))
+    (xwtog (RAW "XWTOGL"))
     (xwbak (RAW "XWBAK"))
     (xsrch (RAW "XSRCH"))
     (xwmov (RAW "XWMOV"))
@@ -174,7 +175,7 @@
     (G-9 (RAW "G(KC_9)"))
     (mnrght (RAW "G(KC_EQL)"))
     (mnlft (RAW "G(KC_MINS)"))
-    (wlck (RAW "G(KC_L)"))
+    (wlck (RAW "XLOCK"))
     (Gtab (RAW "G(KC_TAB)"))
     (GStab (RAW "S(G(KC_TAB))"))
     ;; wnav
@@ -206,6 +207,7 @@
     (basetog (RAW "BASETOGG"))
     (tgmac (RAW "TG_MAC"))
     (tgwin (RAW "TG_WIN"))
+    (tgos (RAW "TG_OS"))
     (tglin (RAW "TG_LIN"))
     (gtbase (RAW "GOTOBASE"))
     (licbr (RAW "LINCBR"))
@@ -220,8 +222,7 @@
 
 ;; ** keymap
 (defvar colemak-keymap
-  '(
-    ("l_colemak"
+  '(("l_colemak"
      q      w      f      p      b             j      l      u      y      ?\'
      a      M_r    S_s    C_t    g             m      C_n    S_e    M_i    o
      z      x      c      G_d    v             k      G_h    compar dotmin slsexc
@@ -249,13 +250,13 @@
     ("l_nav"
      -x-    xwbak   ms_u   p_tab  -x-          -x-    n_tab  -x-    xwfwd   basetog
      -x-    ms_l   ms_d   ms_r   -x-           left   down   up     right  lemacs
-     tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   app    tglin
+     tgos  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   app    tglin
      ;; tgwin  wh_l   wh_u   wh_d   wh_r          -x-    btn1   btn2   xwtog  tglin
      lbase  ---                                                     llck   oswnav)
     ("l_wnav"
      xclose xwbak   G-f    -x-    -x-           -x-    -x-    -x-    xwfwd   -x-
      G-6    G-4    G-0    G-2    G-right       G-left G-3    G-1    G-5    G-7
-     wlck   -x-    G-n    G-8    mnrght        mnlft  G-9    G-e    xwtog  -x-
+     wlck   xwtogl    G-n    G-8    mnrght        mnlft  G-9    G-e    xwtog  -x-
      lbase  ---                                                     xsrch  Gtab)
     ("l_swnav"
      xclose xwbak   G-f    -x-    -x-           -x-   -x-    GS_u   xwfwd   -x-
@@ -276,8 +277,7 @@
      C-g    -x-    -x-    -x-    -x-           -x-    -x-    -x-    -x-    rpt
      tab    -x-    CM_r   CM_t   C-g           CM_spc CM_f   CM_b   CMG_u  ent
      M-x    -x-    M_mi   CM_k   -x-           CM_u   CM_d   CM_lt  CM_gt  CM_e
-     lbase  ---                                                     -x-    rpt)
-    ))
+     lbase  ---                                                     -x-    rpt)))
 
 ;; * HD Neu
 
@@ -928,76 +928,57 @@
     (myrst (RAW "MYRESET"))))
 
 ;; ** keymap
-;; (defvar hd-gold-keymap
-;;   '(("l_base" ;; hd-gold
-;;      j      g      m      p      v          ?\;    ?\.    ?\/    ?\"    ?\'
-;;      r      s      n      d      b          ?\,    a      e      i      h
-;;      x      f      l      c      w          ?\-    u      o      y      k
-;;      navsft mod_t                                                mod_sp symrpt)
-;;     ("l_sym"
-;;      -x-    M_lt   ?\#    ?\:    ?\;           ?\=    ?\^    -x-    M_gt   -x-
-;;      ?\\    ?\'    lcbr   lprn   lbrc          ?\*    mctl   M_exc  M_per  M_amp
-;;      -x-    -x-    esc    ent    -x-           -x-    -x-    ---    ---    ---
-;;      lbase  ---                                                     -x-)    ---
-;;     ("l_num"
-;;      down   ?\+    ?\*    ?\*    -x-           -x-    ?\#    ?\!    ?\%    ?\&
-;;      6      4      0      2      up            -x-    3      1      5      7
-;;      x      ?\.    ?\$    8      -x-           ?\/    9      ?\(    ?\)    ?\_
-;;      lbase  ---                                                      ---    ---)
-;;     ("l_mods"
-;;      -x-    -x-    -x-    -x-    -x-           -x-    -x-    -x-    -x-    -x-
-;;      -x-    malt   mgui   mctl   mlsft         mlsft  mctl   mgui   malt   -x-
-;;      undo   cut    copy   paste  -x-           -x-    bspc   tab    del    lemacs
-;;      lbase  ---                                                     ent    swapkey)
-;;     ("l_nav"
-;;      -x-    wbak   ms_u   p_tab  -x-           -x-    n_tab  -x-    wfwd   -x-
-;;      -x-    ms_l   ms_d   ms_r   -x-           left   down   up     right  -x-
-;;      -x-    wh_l   wh_u   wh_d   wh_r          -x-    ent    esc    G_dot  osmedia
-;;      lbase  ---                                                     llck   oswnav)
-;;     ;; ("l_num"
-;;     ;;  ?\\    ?\`    ?\#    ?\:    ?\;           ?\=    7      8      9      ?\+
-;;     ;;  esc    ?\'    ?\{    ?\(    ?\[           ?\*    4      5      6      ?\-
-;;     ;;  mlsft  ?\.    ?\}    ?\)    ?\]           0      1      2      3      ---
-;;     ;;  to_1   ent                                                     nav    to4)
-;;     ("l_wnav"
-;;      down   wbak   G-f    -x-    -x-           -x-    -x-    -x-    wfwd   -x-
-;;      G-6    G-4    G-0    G-2    G-up          -x-    G-3    G-1    G-5    G-7
-;;      -x-    -x-    -x-    G-8    -x-           -x-    G-9    G-n    G-e    -x-
-;;      lbase  ---                                                     ---    rpt)
-;;     ("l_media"
-;;      -x-    -x-    -x-    -x-    brid          briu   -x-    -x-    -x-    -x-
-;;      -x-    -x-    -x-    -x-    -x-           mute   mprv   mply   mnxt   -x-
-;;      -x-    -x-    -x-    -x-    vold          volu   btn1   btn2   wh_r   f20
-;;      lbase  ---                                                     ent    lfunc)
-;;     ("l_func"
-;;      -x-    -x-    -x-    -x-    -x-        -x-    -x-    -x-    -x-    -x-
-;;      f6     f4     -x-    f2     -x-           -x-    f3     f1     f5     f7
-;;      -x-    f12    f10    f8     -x-           -x-    f9     f11    -x-    -x-
-;;      lbase  ---                                                     -x-    myrst)
-;;     ("l_emacs"
-;;      C_g    -x-    -x-    -x-    -x-        -x-    -x-    -x-    -x-    rpt
-;;      tab    -x-    CM_r   CM_t   -x-        CM_spc CM_f   CM_b   CMG_u  ent
-;;      CM_a   -x-    M_mi   CM_k   -x-        CM_u   CM_d   CM_lt  CM_gt  CM_e
-;;      lbase   -x-                                                  llck   -x-)))
 (defvar hd-gold-keymap
   '(("l_base" ;; hd-gold
      j      g      m      p      v          ?\;    ?\.    ?\/    ?\"    ?\'
      r      s      n      d      b          ?\,    a      e      i      h
      x      f      l      c      w          ?\-    u      o      y      k
-     sft bspc                                                spc ent)
-
-
-
-
+     navsft mod_t                                                mod_sp symrpt)
+    ("l_sym"
+     -x-    M_lt   ?\#    ?\:    ?\;           ?\=    ?\^    -x-    M_gt   -x-
+     ?\\    ?\'    lcbr   lprn   lbrc          ?\*    mctl   M_exc  M_per  M_amp
+     -x-    -x-    esc    ent    -x-           -x-    -x-    ---    ---    ---
+     lbase  ---                                                     -x-)    ---
+    ("l_num"
+     down   ?\+    ?\*    ?\*    -x-           -x-    ?\#    ?\!    ?\%    ?\&
+     6      4      0      2      up            -x-    3      1      5      7
+     x      ?\.    ?\$    8      -x-           ?\/    9      ?\(    ?\)    ?\_
+     lbase  ---                                                      ---    ---)
+    ("l_mods"
+     -x-    -x-    -x-    -x-    -x-           -x-    -x-    -x-    -x-    -x-
+     -x-    malt   mgui   mctl   mlsft         mlsft  mctl   mgui   malt   -x-
+     undo   cut    copy   paste  -x-           -x-    bspc   tab    del    lemacs
+     lbase  ---                                                     ent    swapkey)
+    ("l_nav"
+     -x-    wbak   ms_u   p_tab  -x-           -x-    n_tab  -x-    wfwd   -x-
+     -x-    ms_l   ms_d   ms_r   -x-           left   down   up     right  -x-
+     -x-    wh_l   wh_u   wh_d   wh_r          -x-    ent    esc    G_dot  osmedia
+     lbase  ---                                                     llck   oswnav)
     ;; ("l_num"
     ;;  ?\\    ?\`    ?\#    ?\:    ?\;           ?\=    7      8      9      ?\+
     ;;  esc    ?\'    ?\{    ?\(    ?\[           ?\*    4      5      6      ?\-
     ;;  mlsft  ?\.    ?\}    ?\)    ?\]           0      1      2      3      ---
     ;;  to_1   ent                                                     nav    to4)
-
-
-
-    ))
+    ("l_wnav"
+     down   wbak   G-f    -x-    -x-           -x-    -x-    -x-    wfwd   -x-
+     G-6    G-4    G-0    G-2    G-up          -x-    G-3    G-1    G-5    G-7
+     -x-    -x-    -x-    G-8    -x-           -x-    G-9    G-n    G-e    -x-
+     lbase  ---                                                     ---    rpt)
+    ("l_media"
+     -x-    -x-    -x-    -x-    brid          briu   -x-    -x-    -x-    -x-
+     -x-    -x-    -x-    -x-    -x-           mute   mprv   mply   mnxt   -x-
+     -x-    -x-    -x-    -x-    vold          volu   btn1   btn2   wh_r   f20
+     lbase  ---                                                     ent    lfunc)
+    ("l_func"
+     -x-    -x-    -x-    -x-    -x-        -x-    -x-    -x-    -x-    -x-
+     f6     f4     -x-    f2     -x-           -x-    f3     f1     f5     f7
+     -x-    f12    f10    f8     -x-           -x-    f9     f11    -x-    -x-
+     lbase  ---                                                     -x-    myrst)
+    ("l_emacs"
+     C_g    -x-    -x-    -x-    -x-        -x-    -x-    -x-    -x-    rpt
+     tab    -x-    CM_r   CM_t   -x-        CM_spc CM_f   CM_b   CMG_u  ent
+     CM_a   -x-    M_mi   CM_k   -x-        CM_u   CM_d   CM_lt  CM_gt  CM_e
+     lbase   -x-                                                  llck   -x-)))
 
 
 

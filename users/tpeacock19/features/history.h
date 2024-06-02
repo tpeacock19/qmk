@@ -17,7 +17,7 @@
 #define HISTORY_SIZE 8		// Number of keys in `history` buffer.
 
 extern process_record_result_t process_history(uint16_t keycode,
-                                               keyrecord_t *record);
+					       keyrecord_t *record);
 
 void tap_code_history(uint8_t keycode, keyrecord_t *record);
 void tap_code_history16(uint16_t keycode, keyrecord_t *record);
@@ -30,11 +30,11 @@ typedef struct
   uint8_t modifier;
   keyrecord_t record;
 } history_key_t;
-
+extern bool key_swapped;
 extern history_key_t *get_history(int n);
-
+extern int8_t get_repeat_key_count(void);
 extern void shift_history_keys(void);
 extern void set_history(uint16_t keycode, keyrecord_t record,
-                        uint8_t current_modifier);
+			uint8_t current_modifier);
 
 extern void history_matrix_scan_user(void);

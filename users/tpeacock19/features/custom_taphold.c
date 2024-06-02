@@ -141,6 +141,7 @@ process_record_result_t
 process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 {
   /* bool isLinux = os.type == LINUX; */
+  /* bool isMacOS = os.type == MACOS; */
   /* bool isWindows = os.type == WINDOWS; */
   /*****************************************************************************
     A simulated Tap-Dance can be accomplished with the oneshot_simple_record
@@ -175,6 +176,14 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(G(S(KC_LEFT)));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case LINUX:
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(S(KC_COMMA)), record);
+#else
+	      tap_code16(G(S(KC_COMMA)));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
@@ -195,11 +204,33 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(G(S(KC_RIGHT)));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
 	    case LINUX:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(G(S(KC_DOT)), record);
 #else
 	      tap_code16(G(S(KC_DOT)));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    default:
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    }
+	default:
+	  return PROCESS_RECORD_RETURN_FALSE;
+	}
+
+    case XWTOGL:
+      switch (oneshot_simple_record(record))
+	{
+	case TAP_PRESS:
+	  switch (os.type)
+	    {
+	    case MACOS:
+	    case LINUX:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_COMMA), record);
+#else
+	      tap_code16(G(KC_COMMA));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
@@ -222,6 +253,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(G(KC_P));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
 	    case LINUX:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(G(KC_DOT), record);
@@ -247,6 +279,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(C(KC_Y), record);
 #else
 	      tap_code16(C(KC_Y));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(S(KC_Z)), record);
+#else
+	      tap_code16(G(S(KC_Z)));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
@@ -276,6 +315,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(C(KC_Z));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_Z), record);
+#else
+	      tap_code16(G(KC_Z));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_UNDO, record);
@@ -301,6 +347,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(A(KC_F4), record);
 #else
 	      tap_code16(A(KC_F4));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_Q), record);
+#else
+	      tap_code16(G(KC_Q));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
@@ -331,6 +384,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(G(KC_L));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(C(G(KC_Q)), record);
+#else
+	      tap_code16(C(G(KC_Q)));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
 	    default:
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    }
@@ -352,6 +412,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
+	    case MACOS:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(G(KC_SPC), record);
 #else
@@ -376,6 +437,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(S(KC_INSERT), record);
 #else
 	      tap_code16(S(KC_INSERT));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_V), record);
+#else
+	      tap_code16(G(KC_V));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
@@ -405,6 +473,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(S(KC_DELETE));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_X), record);
+#else
+	      tap_code16(G(KC_X));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_CUT, record);
@@ -430,6 +505,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(C(KC_INSERT), record);
 #else
 	      tap_code16(C(KC_INSERT));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(G(KC_C), record);
+#else
+	      tap_code16(G(KC_C));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
@@ -459,6 +541,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code16(C(G(KC_RIGHT)));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(C(KC_RIGHT), record);
+#else
+	      tap_code16(C(KC_RIGHT));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
 #if defined(HISTORY_ENABLE)
 	      tap_code_history16(KC_WWW_FORWARD, record);
@@ -484,6 +573,13 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	      tap_code_history16(C(G(KC_LEFT)), record);
 #else
 	      tap_code16(C(G(KC_LEFT)));
+#endif
+	      return PROCESS_RECORD_RETURN_FALSE;
+	    case MACOS:
+#if defined(HISTORY_ENABLE)
+	      tap_code_history16(C(KC_LEFT), record);
+#else
+	      tap_code16(C(KC_LEFT));
 #endif
 	      return PROCESS_RECORD_RETURN_FALSE;
 	    case LINUX:
@@ -848,7 +944,7 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 		  tap_code(KC_BSPC);
 		  tap_code(KC_DOT);
 #if defined(HISTORY_ENABLE)
-                  current_modifier = 0;
+		  current_modifier = 0;
 		  tap_code_history(KC_DOT, record);
 		}
 	      else

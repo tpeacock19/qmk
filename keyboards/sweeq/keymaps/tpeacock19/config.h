@@ -73,9 +73,9 @@
  *                                   mugur                                   *
  *****************************************************************************/
 
-// START-MUGUR-REGION
+ // START-MUGUR-REGION
 
-#undef TAPPING_TERM
+ #undef TAPPING_TERM
 #define TAPPING_TERM 180
 #undef TAPPING_TERM_PER_KEY
 
@@ -83,9 +83,9 @@
 #undef LEADER_PER_KEY_TIMING
 #define COMBO_COUNT 27
 #define FORCE_NKRO
-#undef RGBLIGHT_ANIMATIONS
+#undef RGBLIGHT_ANIMATIONS 
 
-// END-MUGUR-REGION
+// END-MUGUR-REGION  
 
 /* #define PERMISSIVE_HOLD */
 /* #undef NO_AUTO_SHIFT_ALPHA */
