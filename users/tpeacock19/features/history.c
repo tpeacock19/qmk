@@ -19,7 +19,12 @@ set_history(uint16_t keycode, keyrecord_t record, uint8_t mods)
   record.keycode = keycode;
   get_history(1)->modifier = mods;
   get_history(1)->record = record;
+#if defined(REPEAT_KEY_ENABLE)
+  set_last_record(keycode, &record);
+  set_last_mods(mods);
+#endif
 }
+
 history_key_t *
 get_history(int n)
 {
@@ -102,12 +107,23 @@ process_history(uint16_t keycode, keyrecord_t *record)
       /* Shift the history buffer and insert the current keycode and
 	 modifiers. */
       if (record->event.pressed)
-        {
-          shift_history_keys();
-          set_history(keycode, *record, current_modifier);
-          deadline = record->event.time + HISTORY_TIMEOUT_MS;
-          last_modifier = current_modifier;
-        }
+	{
+	  shift_history_keys();
+#if defined(REPEAT_KEY_ENABLE)
+	  uint8_t remembered_mods = get_mods() | get_weak_mods();
+# ifndef NO_ACTION_ONESHOT
+	  remembered_mods |= get_oneshot_mods();
+# endif // NO_ACTION_ONESHOT
+	  if (remember_last_key_user(keycode, record, &remembered_mods))
+	    {
+	      set_history(keycode, *record, remembered_mods);
+	    }
+#else
+	  set_history(keycode, *record, current_modifier);
+#endif
+	  deadline = record->event.time + HISTORY_TIMEOUT_MS;
+	  last_modifier = current_modifier;
+	}
       return PROCESS_RECORD_CONTINUE;
     }
 }
@@ -119,6 +135,9 @@ history_matrix_scan_user(void)
 #if defined(CUSTOM_REPEAT_KEY_ENABLE)
       && !key_repeated
 #endif
+/* #if defined(REPEAT_KEY_ENABLE) */
+/*       && (get_repeat_key_count() == 0) */
+/* #endif */
 #if defined(SWAP_KEYS_ENABLE)
       && !key_swapped
 #endif

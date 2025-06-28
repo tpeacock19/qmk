@@ -1,41 +1,31 @@
 #include "swap_keys.h"
-#include <stdint.h>
 #include "history.h"
 
 bool key_swapped = false;
 
 static uint8_t
 find_swap_keycode(const uint8_t (*table)[2], uint8_t table_size_bytes,
-                  uint8_t target)
+		  uint8_t target)
 {
   const uint8_t *keycodes = (const uint8_t *) table;
   for (uint8_t i = 0; i < table_size_bytes; ++i)
     {
-#if defined CONTROLLER && CONTROLLER==atmel-dfu
+#if defined CONTROLLER && CONTROLLER == atmel - dfu
       if (target == pgm_read_byte(keycodes + i))
-        {
-          // Xor (i ^ 1) the index to get the other element in the pair.
-          return pgm_read_byte(keycodes + (i ^ 1));
-        }
+	{
+	  // Xor (i ^ 1) the index to get the other element in the pair.
+	  return pgm_read_byte(keycodes + (i ^ 1));
+	}
 #else
       if (target == keycodes[i])
-        {
-          // Xor (i ^ 1) the index to get the other element in the pair.
-          return keycodes[(i ^ 1)];
-        }
+	{
+	  // Xor (i ^ 1) the index to get the other element in the pair.
+	  return keycodes[(i ^ 1)];
+	}
 #endif
     }
   return KC_NO;
 }
-
-/* static void */
-/* swap_key(keyrecord_t *record) */
-/* { */
-/*   if (get_history(1)->record.keycode == KC_NO || record->tap.count == 0) */
-/*     { */
-/*       return; */
-/*     } */
-/* } */
 
 static uint16_t
 find_swap_key(void)
@@ -53,8 +43,8 @@ find_swap_key(void)
   // Convert 8-bit mods to the 5-bit format used in keycodes. This is lossy:
   // if left and right handed mods were mixed, they all become right handed.
   mods = ((mods & 0xf0) ? /* set right hand bit */ 0x10 : 0)
-         // Combine right and left hand mods.
-         | (((mods >> 4) | mods) & 0xf);
+	 // Combine right and left hand mods.
+	 | (((mods >> 4) | mods) & 0xf);
 
   switch (keycode)
     {
@@ -77,13 +67,13 @@ find_swap_key(void)
   if (IS_QK_BASIC(keycode))
     {
       if ((mods & (MOD_LCTL | MOD_LALT | MOD_LGUI)))
-        {
-          // The last key was pressed with a modifier other than Shift.
-          // The following maps
-          //   mod + F <-> mod + B
-          // and a few others, supporting several core hotkeys used in
-          // Emacs, Vim, less, and other programs.
-          // clang-format off
+	{
+	  // The last key was pressed with a modifier other than Shift.
+	  // The following maps
+	  //   mod + F <-> mod + B
+	  // and a few others, supporting several core hotkeys used in
+	  // Emacs, Vim, less, and other programs.
+	  // clang-format off
             static const uint8_t pairs[][2] PROGMEM = {
                 {KC_F   , KC_B   },  // Forward / Backward.
                 {KC_D   , KC_U   },  // Down / Up.
@@ -91,14 +81,14 @@ find_swap_key(void)
                 {KC_A   , KC_E   },  // Home / End.
                 {KC_O   , KC_I   },  // Older / Newer in Vim jump list.
             };
-          // clang-format on
-          alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
-        }
+	  // clang-format on
+	  alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
+	}
       else
-        {
-          // The last key was pressed with no mods or only Shift. The
-          // following map a few more Vim hotkeys.
-          // clang-format off
+	{
+	  // The last key was pressed with no mods or only Shift. The
+	  // following map a few more Vim hotkeys.
+	  // clang-format off
             static const uint8_t pairs[][2] PROGMEM = {
                 {KC_J   , KC_K   },  // Down / Up.
                 {KC_H   , KC_L   },  // Left / Right.
@@ -106,14 +96,14 @@ find_swap_key(void)
                 {KC_W   , KC_B   },  // Forward / Backward by word.
                 {KC_E   , KC_B   },  // Forward / Backward by word.
             };
-          // clang-format on
-          alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
-        }
+	  // clang-format on
+	  alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
+	}
 
       if (!alt_keycode)
-        {
-          // The following key pairs are considered with any mods.
-          // clang-format off
+	{
+	  // The following key pairs are considered with any mods.
+	  // clang-format off
             static const uint8_t pairs[][2] PROGMEM = {
                 {KC_LEFT, KC_RGHT},  // Left / Right Arrow.
                 {KC_UP  , KC_DOWN},  // Up / Down Arrow.
@@ -135,22 +125,18 @@ find_swap_key(void)
                 {KC_WH_U, KC_WH_D},  // Mouse Wheel Up / Down.
 #endif  // MOUSEKEY_ENABLE
             };
-          // clang-format on
-          alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
-        }
+	  // clang-format on
+	  alt_keycode = find_swap_keycode(pairs, sizeof(pairs), keycode);
+	}
 
       if (alt_keycode)
-        {
-          // Combine basic keycode with mods.
-          return (mods << 8) | alt_keycode;
-        }
+	{
+	  // Combine basic keycode with mods.
+	  return (mods << 8) | alt_keycode;
+	}
     }
 
   return KC_NO; // No alternate key found.
-
-  /* Search for a swap key pair with a keycode equal to the last pressed
-keycode
-  and modifier.  */
 }
 
 process_record_result_t
@@ -164,31 +150,31 @@ process_swap_key(uint16_t keycode, keyrecord_t *record)
   if (swap_key_press_user(keycode, record))
     {
       if (record->event.pressed)
-        {
-          swapped_record = (keyrecord_t){
+	{
+	  swapped_record = (keyrecord_t){
 #ifndef NO_ACTION_TAPPING
-            .tap.interrupted = false,
-            .tap.count = 0,
+	    .tap.interrupted = false,
+	    .tap.count = 0,
 #endif
-            .keycode = find_swap_key(),
-          };
-        }
+	    .keycode = find_swap_key(),
+	  };
+	}
 
       // Early return if there is no alternate key defined.
       if (!swapped_record.keycode)
-        {
-          return PROCESS_RECORD_RETURN_FALSE;
-        }
+	{
+	  return PROCESS_RECORD_RETURN_FALSE;
+	}
 
       if (record->event.pressed)
-        {
-          key_swapped = true;
-        }
+	{
+	  key_swapped = true;
+	}
       swapped_record.event = record->event;
       process_record(&swapped_record);
       clear_history_index(1);
       set_history(extract_keycode_from(swapped_record.keycode), swapped_record,
-                  extract_mods_from(swapped_record.keycode));
+		  extract_mods_from(swapped_record.keycode));
       key_swapped = false;
       return PROCESS_RECORD_RETURN_FALSE;
     }

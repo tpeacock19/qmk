@@ -3,7 +3,7 @@
 #include QMK_KEYBOARD_H
 #include "core/core.h"
 #if defined(LAYER_LOCK_ENABLE)
-# include "layer_lock.h"
+# include "quantum/layer_lock.h"
 #endif
 #if defined(HISTORY_ENABLE)
 # include "history.h"

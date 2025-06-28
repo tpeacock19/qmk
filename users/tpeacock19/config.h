@@ -84,7 +84,7 @@
 # if defined(COMBO_TERM)
 #  undef COMBO_TERM
 # endif
-# define COMBO_TERM (TAPPING_TERM / 4) // time to get all combo keys down
+# define COMBO_TERM (TAPPING_TERM / 5) // time to get all combo keys down
 # define COMBO_TERM_PER_COMBO
 
 # if defined(COMBO_HOLD_TERM)
@@ -101,7 +101,6 @@
 /*****************************************************************************
  *                                  unused                                   *
  *****************************************************************************/
-
 
 // Dynamic macros
 /* #define DYNAMIC_MACRO_NO_NESTING */

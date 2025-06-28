@@ -27,7 +27,7 @@ extern void num_word_toggle(void); /**< Toggles Num Word. */
 extern bool is_num_word_on(void);  /**< Gets whether currently active. */
 
 extern process_record_result_t process_num_word(uint16_t keycode,
-                                                keyrecord_t *record);
+						keyrecord_t *record);
 
 /**
  * @brief Weak function for user-level Num Word press modification.

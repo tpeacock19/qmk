@@ -755,11 +755,15 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
       switch (oneshot_simple_record(record))
 	{
 	  /* layer turned on for Interrupts, as well as hold  */
+#ifndef REPEAT_KEY_ENABLE
 	case INT_PRESS:
+#endif
 	case HOLD_PRESS:
 	  layer_on(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
+#ifndef REPEAT_KEY_ENABLE
 	case INT_RELEASE:
+#endif
 	case HOLD_RELEASE:
 #if defined(LAYER_LOCK_ENABLE)
 	  if (!is_layer_locked(layer))
@@ -767,6 +771,16 @@ process_custom_taphold(uint16_t keycode, keyrecord_t *record)
 	    layer_off(layer);
 	  return PROCESS_RECORD_RETURN_FALSE;
 	default:
+#if defined(REPEAT_KEY_ENABLE)
+	  if (get_repeat_key_count())
+	    {
+	      return PROCESS_RECORD_RETURN_TRUE;
+	    }
+	  set_last_record(get_history(1)->record.keycode,
+			  &get_history(1)->record);
+	  set_last_mods(get_history(1)->modifier);
+	  repeat_key_invoke(&record->event);
+#endif
 	  return PROCESS_RECORD_RETURN_FALSE;
 	}
 

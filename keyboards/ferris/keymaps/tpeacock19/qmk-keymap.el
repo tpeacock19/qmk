@@ -158,7 +158,7 @@
     (xundo (RAW "XUNDO"))
     (xwfwd (RAW "XWFWD"))
     (xwtog (RAW "XWTOG"))
-    (xwtog (RAW "XWTOGL"))
+    (xwtogl (RAW "XWTOGL"))
     (xwbak (RAW "XWBAK"))
     (xsrch (RAW "XSRCH"))
     (xwmov (RAW "XWMOV"))

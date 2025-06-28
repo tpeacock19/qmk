@@ -6,7 +6,7 @@
 # include "history.h"
 #endif
 #if defined(LAYER_LOCK_ENABLE)
-# include "layer_lock.h"
+# include "quantum/layer_lock.h"
 #endif
 
 // Define a type for as many tap dance states as you need

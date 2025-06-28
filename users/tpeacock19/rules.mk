@@ -63,10 +63,10 @@ endif
 ifeq ($(strip $(TAP_DANCE_ENABLE)), yes)
 	SRC += $(USER_PATH)/features/tap_dance.c
 endif
-ifeq ($(strip $(LAYER_LOCK_ENABLE)), yes)
-	SRC += $(USER_PATH)/features/layer_lock.c
-	OPT_DEFS += -DLAYER_LOCK_ENABLE
-endif
+#ifeq ($(strip $(LAYER_LOCK_ENABLE)), yes)
+#	SRC += $(USER_PATH)/features/my_layer_lock.c
+#	OPT_DEFS += -DLAYER_LOCK_ENABLE
+#endif
 ifeq ($(strip $(ADAPTIVE_KEYS_ENABLE)), yes)
 	OPT_DEFS += -DADAPTIVE_KEYS_ENABLE
 endif

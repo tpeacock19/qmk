@@ -85,7 +85,7 @@
 #define FORCE_NKRO
 #undef RGBLIGHT_ANIMATIONS 
 
-// END-MUGUR-REGION  
+// END-MUGUR-REGION   
 
 /* #define PERMISSIVE_HOLD */
 /* #undef NO_AUTO_SHIFT_ALPHA */

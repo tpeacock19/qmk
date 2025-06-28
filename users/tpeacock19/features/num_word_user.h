@@ -1,3 +1,4 @@
+#pragma once
 #include QMK_KEYBOARD_H
 #include "num_word.h"
 
@@ -36,9 +37,9 @@ num_word_press_user(uint16_t keycode)
       case KC_DOWN:
       case KC_TAB:
       case KC_ENT:
-        return true;
+	return true;
       default:
-        num_word_off();
-        return false;
+	num_word_off();
+	return false;
       }
 }

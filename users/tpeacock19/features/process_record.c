@@ -1,4 +1,6 @@
 #include "process_record.h"
+#include "keycodes.h"
+#include "process_layer_lock.h"
 
 __attribute__((weak)) bool
 pre_process_record_user(uint16_t keycode, keyrecord_t *record)
@@ -30,10 +32,10 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
   isOneShotLockedShift = get_oneshot_locked_mods() & MOD_MASK_SHIFT;
   isOneShotShift = get_oneshot_mods() & MOD_MASK_SHIFT || isOneShotLockedShift;
   isShifted = isOneShotShift || get_mods() & MOD_MASK_SHIFT;
-  if (isShifted)
-    {
-      current_modifier |= MOD_BIT(KC_LSFT);
-    }
+  /* if (isShifted) */
+  /*   { */
+  /*     current_modifier |= MOD_BIT(KC_LSFT); */
+  /*   } */
 #if defined(ACHORDION_ENABLE)
   if (!process_achordion(keycode, record))
     {
@@ -83,7 +85,7 @@ process_record_user(uint16_t keycode, keyrecord_t *record)
 #endif
 
 #if defined(LAYER_LOCK_ENABLE)
-  if (!process_layer_lock(keycode, record, LLOCK))
+  if (!process_layer_lock(keycode, record))
     {
       return false;
     }

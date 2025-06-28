@@ -1,5 +1,4 @@
 #include "tpeacock19.h"
-#include <stdint.h>
 
 /* #if defined(ACHORDION_ENABLE) */
 /* # include "features/achordion.h" */
@@ -36,6 +35,7 @@ const tapping_term_per_key_t tapping_term_keys[] = {
   { GUI_D, 50 },    // Shift . is ?
   { GUI_H, 50 },    // Shift . is ?
   { NUM_RPT, -10 }, // Shift . is ?
+  { SYM_RPT, -10 }, // Shift . is ?
   { SWAPKEY, -10 }, // Shift . is ?
 };
 
@@ -57,53 +57,6 @@ const custom_shift_key_t custom_shift_keys[] = {
 };
 const uint8_t NUM_CUSTOM_SHIFT_KEYS
   = sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
-#endif
-
-#if defined(SWAP_KEYS_ENABLE)
-# if defined CONTROLLER && CONTROLLER == atmel-dfu
-const uint16_t swap_pairs[][2] PROGMEM = {
-# else
-const uint16_t swap_pairs[][2] = {
-# endif
-  { KC_F, KC_B },	// Forward / Backward.
-  { C(KC_F), C(KC_B) }, // {forward,backward}-char
-};
-const uint16_t NUM_SWAP_PAIRS = sizeof(swap_pairs) / sizeof(swap_pair_t);
-
-# if defined CONTROLLER && CONTROLLER == atmel-dfu
-const swap_key_t swap_keys[] PROGMEM = {
-# else
-const swap_key_t swap_keys[] = {
-# endif
-  /* { KC_TAB, S(KC_TAB) },       // tab (button) forward/backward */
-  /* { C(KC_TAB), C(S(KC_TAB)) }, // tabs forward/backward */
-  /* Emacs */
-  { C(KC_F), C(KC_B) },		  // {forward,backward}-char
-  { A(KC_F), A(KC_B) },		  // {forward,backward}-word
-  { C(A(KC_N)), C(A(KC_P)) },	  // {forward,backward}-list
-  { C(A(KC_UP)), C(A(KC_DOWN)) }, // {backward-up,down}-list
-  { C(A(KC_A)), C(A(KC_E)) },	  // {beginning,end}-of-defun
-  { C(A(KC_F)), C(A(KC_B)) },	  // {forward,backward}-sexp
-  { C(KC_S), C(KC_R) },		  // isearch-{forward,backward}
-  { C(KC_I), C(KC_O) },		  // isearch-{forward,backward}
-  { C(KC_V), A(KC_V) },		  // scroll-{up,down}-command
-  { C(A(KC_V)), S(C(A(KC_V))) },  // scroll-other-window(-down)
-  { S(KC_U), KC_U },		  // undo-redo
-  { C(KC_RIGHT), C(KC_LEFT) },	  // {right,left}-word
-  { KC_RIGHT, KC_LEFT },	  // scroll-{up,down}-command
-  { KC_PGUP, KC_PGDN },		  // page-{up,down}
-  { KC_GT, KC_LT },		  // slurp/barf
-  { C(KC_GT), C(KC_LT) },	  // scroll-other-winow
-  { C(KC_U), C(KC_D) },		  // scroll up/down (vim?)
-  { A(KC_DOT), A(KC_COMMA) },	  // M-. / M-, xref forward/backward
-  /* Media */
-  { KC_AUDIO_VOL_UP, KC_AUDIO_VOL_DOWN },   // vol {up,down}
-  { KC_BRIGHTNESS_UP, KC_BRIGHTNESS_DOWN }, // brightness {up,down}
-  { KC_WWW_FORWARD, KC_WWW_BACK },	    // move desktops (linux)
-  /* Windows */
-  { C(G(KC_RIGHT)), C(G(KC_LEFT)) }, // move virtual desktops (windows)
-};
-const uint16_t NUM_SWAP_KEYS = sizeof(swap_keys) / sizeof(swap_key_t);
 #endif
 
 __attribute__((weak)) layer_state_t

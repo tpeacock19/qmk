@@ -24,10 +24,6 @@
 # include "auto_shift_user.h"
 #endif
 
-#if defined(LAYER_LOCK_ENABLE)
-# include "layer_lock.h"
-#endif
-
 #if defined(TAP_DANCE_ENABLE)
 # include "tap_dance.h"
 #endif
@@ -57,7 +53,9 @@
 # include "num_word.h"
 # include "num_word_user.h"
 #endif
-
+#if defined(REPEAT_KEY_ENABLE)
+# include "repeat_key_user.h"
+#endif
 #if defined(CUSTOM_REPEAT_KEY_ENABLE)
 # include "custom_repeat_key.h"
 # include "custom_repeat_key_user.h"

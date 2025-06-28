@@ -201,8 +201,13 @@ enum custom_keycodes
 #define SYM_SFT LT(L_SYM, KC_NO)
 
 /* Tap: Repeat | Hold: Layer */
-#define SYM_RPT LT(L_SYM, REPEAT)
-#define NUM_RPT LT(L_NUM, REPEAT)
+#if defined(REPEAT_KEY_ENABLE)
+# define SYM_RPT LT(L_SYM, QK_REPEAT_KEY)
+# define NUM_RPT LT(L_NUM, QK_REPEAT_KEY)
+#else
+# define SYM_RPT LT(L_SYM, REPEAT)
+# define NUM_RPT LT(L_NUM, REPEAT)
+#endif
 
 /* Tap: Key | Hold: Layer */
 #define MOD_T LT(L_MODS, KC_T)
